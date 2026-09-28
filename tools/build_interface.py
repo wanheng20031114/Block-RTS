@@ -67,8 +67,8 @@ def button(name,parent,text,x,y,w,h,**kwargs):
 
 # A light upper HUD floats over the game, keeping almost all screen real estate for 3D.
 s.node('TopLeft','Control','.',**rect(28,22,420,120),mouse_filter='2')
-label('Eyebrow','TopLeft','积木争霸  /  边境战役',0,0,400,20,11,'Color(0.92,0.81,0.56,1)')
-label('Title','TopLeft','积木争霸',0,21,340,42,31,bold=True)
+label('Eyebrow','TopLeft','Block-RTS  /  边境战役',0,0,400,20,11,'Color(0.92,0.81,0.56,1)')
+label('Title','TopLeft','Block-RTS',0,21,340,42,31,bold=True)
 label('Location','TopLeft','琥珀十字路  ·  1v1 遭遇战',1,66,340,24,13,'Color(0.84,0.82,0.72,1)')
 label('Objective','TopLeft','摧毁敌队全部军事建筑',0,103,390,26,16,unique=True)
 label('EnemyCount','TopLeft','敌军 30    击败 0',0,133,330,22,12,'Color(0.82,0.79,0.66,1)',unique=True)
@@ -148,7 +148,7 @@ button('CloseHelp','HelpOverlay/Paper','返回战场',529,554,166,31)
 
 overlay('PauseOverlay')
 s.node('Paper','Panel','PauseOverlay',layout_mode='0',anchor_left='0.5',anchor_right='0.5',anchor_top='0.5',anchor_bottom='0.5',offset_left='-240',offset_top='-160',offset_right='240',offset_bottom='160')
-label('Eyebrow','PauseOverlay/Paper','积木争霸',32,25,416,24,12,'Color(0.82,0.69,0.44,1)',horizontal_alignment='1')
+label('Eyebrow','PauseOverlay/Paper','Block-RTS',32,25,416,24,12,'Color(0.82,0.69,0.44,1)',horizontal_alignment='1')
 label('Title','PauseOverlay/Paper','战斗已暂停',32,74,416,46,29,bold=True,horizontal_alignment='1')
 button('ResumeButton','PauseOverlay/Paper','继续战斗  [Esc]',54,169,372,44)
 button('RestartButton','PauseOverlay/Paper','重新开始',54,230,372,40)

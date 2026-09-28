@@ -1,0 +1,66 @@
+[gd_scene load_steps=4 format=3]
+
+[sub_resource type="ProceduralSkyMaterial" id="sky_material"]
+sky_top_color = Color(0.32,0.41,0.48,1)
+sky_horizon_color = Color(0.81,0.73,0.55,1)
+ground_bottom_color = Color(0.29,0.25,0.19,1)
+ground_horizon_color = Color(0.8,0.72,0.53,1)
+
+[sub_resource type="Sky" id="sky"]
+sky_material = SubResource("sky_material")
+
+[sub_resource type="Environment" id="world"]
+background_mode = 2
+sky = SubResource("sky")
+ambient_light_source = 3
+ambient_light_color = Color(0.76,0.81,0.85,1)
+ambient_light_energy = 0.62
+reflected_light_source = 2
+tonemap_mode = 2
+ssao_enabled = true
+ssao_radius = 1.7
+ssao_intensity = 1.25
+ssao_power = 1.2
+ssao_detail = 0.5
+ssil_enabled = true
+ssil_radius = 3.0
+ssil_intensity = 0.3
+glow_enabled = true
+glow_intensity = 0.3
+glow_bloom = 0.03
+fog_enabled = true
+fog_light_color = Color(0.58,0.66,0.58,1)
+fog_light_energy = 0.5
+fog_density = 0.0007
+adjustment_enabled = true
+adjustment_brightness = 1.0
+adjustment_contrast = 1.06
+adjustment_saturation = 1.0
+
+[node name="MeadowSurfaceReview" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("world")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-54,-31,0)
+light_color = Color(1,0.94,0.82,1)
+light_energy = 1.08
+shadow_enabled = true
+directional_shadow_max_distance = 135.0
+shadow_bias = 0.06
+shadow_normal_bias = 0.65
+directional_shadow_blend_splits = true
+directional_shadow_mode = 0
+light_angular_distance = 0.8
+
+[node name="Camera3D" type="Camera3D" parent="."]
+position = Vector3(-60, 84, 60)
+rotation_degrees = Vector3(-45, -45, 0)
+projection = 1
+size = 144.0
+near = 0.1
+far = 400.0
+current = true
+
+[node name="MapContainer" type="Node3D" parent="."]

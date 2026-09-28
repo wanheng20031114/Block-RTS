@@ -7,7 +7,7 @@ uniform vec4 grass_shade : source_color = vec4(0.410, 0.440, 0.225, 1.0);
 uniform vec4 grass_light : source_color = vec4(0.480, 0.505, 0.275, 1.0);
 varying vec3 world_position;
 
-#include "res://assets/block_war/environment/meadow_surface.gdshaderinc"
+#include "res://assets/models/environment/meadow_surface.gdshaderinc"
 
 void vertex() {
 	world_position = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;

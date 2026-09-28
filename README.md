@@ -1,12 +1,14 @@
-# Block Conquest · 积木争霸
+# Block-RTS
 
-英文项目名为 **Block Conquest**，源码目录与 GitHub 仓库统一使用 **`Block-Conquest`**。项目地址：[wanheng20031114/Block-Conquest](https://github.com/wanheng20031114/Block-Conquest)。
+**Block-RTS** 是独立的 Godot 项目，包含传统 RTS、联机、林海远征、自由沙盘、英雄与 MOBA 测试模式。项目地址：[wanheng20031114/Block-RTS](https://github.com/wanheng20031114/Block-RTS)。积木战争在独立的 Block-Conquest 项目继续开发，不包含在本项目中。
+
+本项目独立使用 `Godot/app_userdata/Block-RTS`。首次运行仅从原「积木争霸」目录复制设置、大厅偏好和 `rogue_run.json`；已有 Block-RTS 文件优先，原文件不会改动。
 
 新增 **林海远征** 单人肉鸽第一层：森林路网、战略与初军选择、批量招募、独立布阵、收藏品、节点存档，以及“前哨站”和强制“围剿”两种作战。围剿胜利后进入层间整备，第二层暂未开放。见 [玩法说明](docs/roguelike-playguide.md) 与 [实施验证记录](docs/roguelike-implementation.md)。
 
 Godot 4.6 原创 3D RTS，采用暖色低多边形模型与 45° 正交视角。快速建立兵营，指挥混编军队，争夺金矿并摧毁敌方基地。支持单人对 Bot、1v1、2v2、3v3、4v4、2v2v2 三队混战和八人无队伍乱战，通过上海 ENet/DTLS 中继联机。
 
-![积木争霸主菜单](report/ui-0.9.0-home.png)
+![Block-RTS 主菜单](docs/art/product_split/home.png)
 
 长矛兵模型与本次数值调整见 [制作与验证记录](report/spearman-2026-09-11.md)。
 
@@ -17,23 +19,23 @@ Godot 4.6 原创 3D RTS，采用暖色低多边形模型与 45° 正交视角。
 获取源码：
 
 ```powershell
-git clone https://github.com/wanheng20031114/Block-Conquest.git
-cd Block-Conquest
+git clone https://github.com/wanheng20031114/Block-RTS.git
+cd Block-RTS
 ```
 
-用 Godot 4.6.3 导入 `project.godot` 后按 F5，主场景为原生大厅 `scenes/lobby.tscn`。Windows 发布包解压后运行 `windows/积木争霸.exe`，保持 EXE 与 PCK 同目录。使用 Forward+ Vulkan 渲染。
+用 Godot 4.6.3 导入 `project.godot` 后按 F5，主场景为原生大厅 `scenes/lobby.tscn`。Windows 发布包解压后运行 `windows/Block-RTS.exe`，保持 EXE 与 PCK 同目录。使用 Forward+ Vulkan 渲染。
 
-安装同版本导出模板后运行 `powershell -ExecutionPolicy Bypass -File tools/build_windows.ps1`。输出 `builds/积木争霸-Windows-x64.zip`；构建产物不纳入 Git。完整操作见 [玩家说明](docs/windows-readme.txt)，联机部署见 [中继文档](server/README.md)。
+安装同版本导出模板后运行 `powershell -ExecutionPolicy Bypass -File tools/build_windows.ps1`。输出 `builds/Block-RTS-Windows-x64.zip`；构建产物不纳入 Git。完整操作见 [玩家说明](docs/windows-readme.txt)，联机部署见 [中继文档](server/README.md)。
 
-当前正式发行版 **0.12.0**，协议 **10**：启用原生批量模型、静止单位避让剪枝和路径查询缓存，减少重复实体采样与 JSON 编码，并将单批快照编码放到原生工作线程。同步只保留待发的最新状态，限制同一帧的发送量；短时音效和特效不再挤占可靠重传队列。公网中继采用正式运行模板，保留完整身份、内容、权限与限流校验，及时转发已验证消息。建议房主和客户端一同更新，服务端继续兼容协议10旧包。
+以下为拆分前 **0.12.0 / 协议 10** 的历史发行说明；当前源代码版本以 `NetworkProtocol.RELEASE_ID` / `VERSION` 为准：启用原生批量模型、静止单位避让剪枝和路径查询缓存，减少重复实体采样与 JSON 编码，并将单批快照编码放到原生工作线程。同步只保留待发的最新状态，限制同一帧的发送量；短时音效和特效不再挤占可靠重传队列。公网中继采用正式运行模板，保留完整身份、内容、权限与限流校验，及时转发已验证消息。建议房主和客户端一同更新，服务端继续兼容协议10旧包。
 
 本版以 **500 单位下的可玩性** 为优化范围。已测持续混编交战中，批量模型及静止剪枝组合约 **38.74 FPS / 30 TPS**；这不代表稳定60 FPS，也不是多人联机渲染帧率保证。共享流场和静态扫掠候选仍关闭。实际发布检查、测量范围和已知限制见 [0.12 发布报告](report/release-0.12.md)。
 
-[下载0.12.0 Windows x64完整包](https://github.com/wanheng20031114/Block-Conquest/releases/download/v0.12.0/jimu-zhengba-0.12.0-Windows-x64.zip)。解压后运行 `积木争霸.exe`，不要只复制EXE。
+本项目后续发行包在 [Block-RTS Releases](https://github.com/wanheng20031114/Block-RTS/releases) 提供；当前可使用本项目构建脚本生成 `Block-RTS.exe` 与同名 PCK。
 
 数值沿用0.11.0：剑士、投石车、加农炮视野统一为14，弓手7秒训练、骑士8秒训练；炮基础攻击40，仅对建筑增加100伤害。详见 [完整数值审查](report/balance-0.11.0.md)，报告以0.10.0为基线列出单位对位、攻防科技组合及训练与视野变化。电脑难度随席位配置同步，旧协议9中继或客户端不能混用。
 
-异常后可运行发布包内 `COLLECT_DIAGNOSTICS.cmd`，在“文档/积木争霸-诊断”生成本地诊断ZIP；不会自动上传或修改设置。已复现问题、修复与诊断范围见 [稳定性调查](docs/crash-investigation-0.7.3.md)。
+异常后可运行发布包内 `COLLECT_DIAGNOSTICS.cmd`，在“文档/Block-RTS-诊断”生成本地诊断ZIP；不会自动上传或修改设置。已复现问题、修复与诊断范围见 [稳定性调查](docs/crash-investigation-0.7.3.md)。
 
 2026-09-10 新增选中单位与建筑的具体所属昵称、四档电脑难度，并调整大本营双塔及攻防数值（含剑士远程护甲1）。当前变化和验证见 [归属、难度与平衡调整](docs/ownership-ai-balance.md)；历史报告保留原发布数值。
 
@@ -133,7 +135,7 @@ python tests/network_runner.py local
 python tests/network_game_live_runner.py local
 python tests/relay_timeout_lifecycle_runner.py
 python tests/crash_stability_runner.py
-python tests/diagnostic_logging_test.py builds/windows/积木争霸.exe
+python tests/diagnostic_logging_test.py builds/windows/Block-RTS.exe
 powershell -ExecutionPolicy Bypass -File tools/profile_skirmish.ps1
 ```
 

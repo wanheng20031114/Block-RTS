@@ -25,6 +25,8 @@
 
 项目使用 Forward+ Vulkan 渲染；单位数量、粒子和场景复杂度都会影响 CPU/GPU 负担。性能结论应以目标设备实测为准。
 
-`COLLECT_DIAGNOSTICS.cmd` 在本机文档目录的“积木争霸-诊断”文件夹生成 ZIP，不自动上传。内容包括日志、相关 Windows 错误、系统与显卡信息以及 EXE/PCK 校验值。排查联机不匹配时，同时核对客户端、服务器的协议和内容清单。
+`COLLECT_DIAGNOSTICS.cmd` 在本机文档目录的“Block-RTS-诊断”文件夹生成 ZIP，不自动上传。内容包括日志、相关 Windows 错误、系统与显卡信息以及 EXE/PCK 校验值。排查联机不匹配时，同时核对客户端、服务器的协议和内容清单。
 
 远征存档路径为 `user://rogue_run.json`，由 Godot 映射到本机用户数据目录。存档保存节点结算后的状态，不保存战斗现场。
+
+本产品源码与发布入口：[Block-RTS](https://github.com/wanheng20031114/Block-RTS)。独立用户数据目录为 `Godot/app_userdata/Block-RTS`；首次运行从原「积木争霸」复制设置、大厅偏好及远征检查点，目标已有文件时不覆盖，旧产品数据不修改。

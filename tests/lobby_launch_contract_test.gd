@@ -14,6 +14,8 @@ func _run() -> void:
 	session.name = "Session"
 	session.relay = Fixtures.FakeRelay.new()
 	session.add_child(session.relay)
+	session.add_child(preload("res://scenes/ui/ui_feedback.tscn").instantiate())
+	session.add_child(preload("res://scenes/ui/ui_transition.tscn").instantiate())
 	root.add_child(session)
 	var lobby: Node3D = load("res://scenes/lobby.tscn").instantiate()
 	root.add_child(lobby)

@@ -137,7 +137,7 @@ func _run() -> void:
 	for frame in 4:
 		await process_frame
 	check(lobby.mode == "1v1" and not control("SoloPanel").visible and not control("OnlinePanel").visible, "home starts with one calm menu rather than setup panels")
-	check(lobby.get_node("CanvasLayer/UI/Brand/Title").text == "积木争霸", "new brand is the native title")
+	check(lobby.get_node("CanvasLayer/UI/Brand/Title").text == "Block-RTS", "new brand is the native title")
 	check(control("Slots").get_child_count() == 8, "all eight room rows are authored in the scene")
 	check(Engine.max_fps == previous_limit, "menu respects user frame limit")
 	await capture("lobby-090-home")

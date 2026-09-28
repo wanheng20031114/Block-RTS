@@ -1,8 +1,9 @@
-积木争霸 · 玩家指南
+Block-RTS · 玩家指南
 
 启动游戏
-完整解压 windows 文件夹，双击“积木争霸.exe”。EXE 与 PCK 必须来自同一个发布包，并留在同一目录。
+完整解压 windows 文件夹，双击“Block-RTS.exe”。EXE 与 PCK 必须来自同一个发布包，并留在同一目录。
 当前版本可在主菜单查看。FONT_LICENSE.txt 是随包字体的许可，请保留。
+本产品使用独立的 Block-RTS 用户目录；首次运行从原“积木争霸”复制设置、大厅偏好和远征存档。已有新配置时不覆盖，原数据保留。
 
 选择玩法
 单人遭遇战：与电脑对战，可选择对战规模与难度，无需联网。
@@ -53,6 +54,6 @@ B 选择大本营，F2 或 G 选择全部己方战斗单位，句点选择空闲
 请让所有玩家使用同一个完整发布包。若提示版本或内容不匹配，请更新到与房间服务器兼容的发布包。
 
 遇到问题
-可双击 COLLECT_DIAGNOSTICS.cmd，在“文档/积木争霸-诊断”生成本地 ZIP，便于反馈问题。
+可双击 COLLECT_DIAGNOSTICS.cmd，在“文档/Block-RTS-诊断”生成本地 ZIP，便于反馈问题。
 诊断包包含日志、近期相关 Windows 错误、显卡和系统信息及游戏文件校验值，不会自动上传。
-项目及反馈：https://github.com/wanheng20031114/Block-Conquest
+项目及反馈：https://github.com/wanheng20031114/Block-RTS

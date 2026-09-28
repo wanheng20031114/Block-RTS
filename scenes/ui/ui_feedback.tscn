@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" path="res://scripts/ui/ui_feedback.gd" id="script"]
 [ext_resource type="AudioStream" path="res://assets/audio/ui/arc_nice_click.wav" id="select1"]
-[ext_resource type="AudioStream" path="res://assets/audio/block_war/war_order_01.wav" id="order1"]
-[ext_resource type="AudioStream" path="res://assets/audio/block_war/war_order_02.wav" id="order2"]
-[ext_resource type="AudioStream" path="res://assets/audio/block_war/war_cancel_01.wav" id="cancel"]
-[ext_resource type="AudioStream" path="res://assets/audio/block_war/war_ratio_01.wav" id="ratio1"]
-[ext_resource type="AudioStream" path="res://assets/audio/block_war/war_ratio_02.wav" id="ratio2"]
+[ext_resource type="AudioStream" path="res://assets/audio/ui/war_order_01.wav" id="order1"]
+[ext_resource type="AudioStream" path="res://assets/audio/ui/war_order_02.wav" id="order2"]
+[ext_resource type="AudioStream" path="res://assets/audio/ui/war_cancel_01.wav" id="cancel"]
+[ext_resource type="AudioStream" path="res://assets/audio/ui/war_ratio_01.wav" id="ratio1"]
+[ext_resource type="AudioStream" path="res://assets/audio/ui/war_ratio_02.wav" id="ratio2"]
 
 [sub_resource type="AudioStreamRandomizer" id="select"]
 resource_local_to_scene = true

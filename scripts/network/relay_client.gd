@@ -311,7 +311,7 @@ func _receive(message: Dictionary) -> void:
 			room_changed.emit(room)
 		"start":
 			if not message.get("config") is Dictionary or not Protocol.match_config_error(message.config).is_empty() or owner_id < 0 or owner_id >= message.config.players.size() or message.config.players[owner_id].controller == "open":
-				_fail("invalid_roster", "积木争霸对局席位配置无效")
+				_fail("invalid_roster", "Block-RTS对局席位配置无效")
 				return
 			var resuming := not _match.is_empty()
 			outbound_invalidated.emit()

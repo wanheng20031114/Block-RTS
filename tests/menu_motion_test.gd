@@ -2,19 +2,8 @@ extends SceneTree
 ## Real menu scenes and native input exercise interruption and context scoping.
 ## Settings are only opened/closed; this test never applies or saves preferences.
 
-const COMMANDER := "res://scenes/block_war/commander_select.tscn"
-const MAP_PICKER := "res://scenes/block_war/map_select.tscn"
+const LOBBY := "res://scenes/lobby.tscn"
 const FIXTURE := "res://tests/ui_motion_fixture.tscn"
-const COMMANDER_DETAILS: Array[NodePath] = [
-	NodePath("%Portrait"), NodePath("%AnimalName"), NodePath("%Personality"), NodePath("%Role"),
-	NodePath("Margin/Column/Content/Details/Skill0"), NodePath("Margin/Column/Content/Details/Skill1"),
-	NodePath("Margin/Column/Content/Details/Skill2"), NodePath("Margin/Column/Content/Details/Skill3"),
-]
-const MAP_DETAILS: Array[NodePath] = [
-	NodePath("%Preview"), NodePath("Margin/Column/Content/Overview/OverviewColumn/MapHeader"),
-	NodePath("%MapInfo"), NodePath("%TerrainInfo"), NodePath("%Description"),
-	NodePath("%SpawnLegend"), NodePath("%Teams"),
-]
 const SETTINGS_SECTIONS: Array[NodePath] = [
 	NodePath("Center/Panel"), NodePath("Center/Panel/Layout/Heading"),
 	NodePath("Center/Panel/Layout/Body/Sidebar"), NodePath("Center/Panel/Layout/Body/Content"),
@@ -22,6 +11,8 @@ const SETTINGS_SECTIONS: Array[NodePath] = [
 ]
 var checks := 0
 var failures: Array[String] = []
+var _had_lobby_preferences := false
+var _lobby_preferences: PackedByteArray = []
 
 func _initialize() -> void:
 	_run.call_deferred()
@@ -75,35 +66,43 @@ func _check_entrance(scene: Node, label: String) -> void:
 		check(control.scale.is_equal_approx(Vector2.ONE) and is_equal_approx(control.modulate.a, 1.0),
 			"%s: %s finishes at authored transform and opacity" % [label, control.name])
 
+func _restore_lobby_preferences() -> void:
+	var path := "user://lobby_preferences.cfg"
+	if _had_lobby_preferences:
+		var file := FileAccess.open(path, FileAccess.WRITE)
+		assert(file != null)
+		file.store_buffer(_lobby_preferences)
+	elif FileAccess.file_exists(path):
+		assert(DirAccess.remove_absolute(path) == OK)
+
 func _run() -> void:
-	create_timer(45.0, true, false, true).timeout.connect(func(): quit(3))
+	_had_lobby_preferences = FileAccess.file_exists("user://lobby_preferences.cfg")
+	if _had_lobby_preferences:
+		_lobby_preferences = FileAccess.get_file_as_bytes("user://lobby_preferences.cfg")
+	create_timer(45.0, true, false, true).timeout.connect(func():
+		_restore_lobby_preferences()
+		quit(3))
 	root.size = Vector2i(1600, 900)
 	var session: Node = root.get_node("Session")
 	var settings: GameSettings = session.settings
 	var original_preferences: Dictionary = settings.snapshot()
-	var original_commander: StringName = session.block_war_commander
-	var original_map: String = session.block_war_map_id
-	session.block_war_commander = &"squirrel"
-	session.block_war_map_id = "rift"
 	await _check_transition(session)
 	for resolution: Vector2i in [Vector2i(1600, 900), Vector2i(1280, 720)]:
 		root.size = resolution
-		await _check_commander(session, resolution)
-		await _check_map(session, resolution)
+		await _check_lobby(resolution)
 	await _check_settings(settings)
 	await _check_battle_profile(settings)
 	check(settings.snapshot() == original_preferences, "menu motion never changes saved preference values")
-	session.block_war_commander = original_commander
-	session.block_war_map_id = original_map
+	_restore_lobby_preferences()
 	print("MENU_MOTION_TEST checks=", checks, " failures=", failures.size())
 	quit(0 if failures.is_empty() else 1)
 
 func _check_transition(session: Node) -> void:
 	change_scene_to_file(FIXTURE)
 	await scene_changed
-	check(session.change_scene(COMMANDER) == OK, "real paper transition accepts commander selection")
+	check(session.change_scene(LOBBY) == OK, "real paper transition accepts the RTS lobby")
 	await scene_changed
-	var picker: Control = current_scene
+	var picker: Node3D = current_scene
 	var entrance: Node = picker.get_node("MenuEntrance")
 	check(session.transition.busy and not entrance.started, "native scene_changed does not start an entrance beneath the paper")
 	await _settle(0.08)
@@ -112,62 +111,36 @@ func _check_transition(session: Node) -> void:
 		check(is_zero_approx(picker.get_node(path).modulate.a), "covered section stays hidden: %s" % path)
 	await session.transition.completed
 	check(entrance.started, "transition completed starts the waiting entrance")
-	await _settle()
-	_check_entrance(picker, "transitioned commander")
+	await _settle(0.80) # Nine authored lobby groups complete after 0.66 seconds.
+	_check_entrance(picker, "transitioned lobby")
 
-func _check_commander(session: Node, resolution: Vector2i) -> void:
-	change_scene_to_file(COMMANDER)
+func _check_lobby(resolution: Vector2i) -> void:
+	change_scene_to_file(LOBBY)
 	await scene_changed
+	await _settle(0.80)
+	var lobby: Node3D = current_scene
+	_check_entrance(lobby, "RTS lobby %s" % resolution)
+	_click(lobby.get_node("%SoloMenu"))
 	await _settle()
-	var picker: Control = current_scene
-	_check_entrance(picker, "direct commander %s" % resolution)
-	var baseline := _capture(picker, COMMANDER_DETAILS)
-	for index: int in [1, 2, 5, 1, 0]:
-		_click(picker.get_node("%%Animal%d" % index))
+	var solo: Control = lobby.get_node("%SoloPanel")
+	var baseline := _capture(lobby, [NodePath("%SoloPanel"), NodePath("%MapTitle"), NodePath("%SoloDescription")])
+	for mode: String in ["2v2", "4v4", "1v1"]:
+		_click(lobby.get_node("%Mode" + mode))
 		await _settle(0.035)
-	_move(Vector2(4, 4))
+	lobby._on_close_solo()
+	check(not solo.visible, "solo panel closes immediately during entrance")
+	_click(lobby.get_node("%SoloMenu"))
 	await _settle()
-	check(session.block_war_commander == &"squirrel", "rapid native commander clicks retain the final selection at %s" % resolution)
-	_check_restored(baseline, "rapid commander switching %s" % resolution)
-	_click(picker.get_node("%Animal0"))
-	check(is_equal_approx(picker.get_node("%Portrait").modulate.a, 1.0), "reselecting the commander does not restart its fade")
-	check(not picker.get_node("%Portrait").get_meta(UIMotion.PANEL_META).active, "reselecting the commander creates no new portrait animation")
-	for index: int in [3, 4]:
-		var locked: Button = picker.get_node("%%Animal%d" % index)
-		_click(locked)
-		locked.mouse_entered.emit()
-		locked.button_down.emit()
-		await _settle(0.20)
-		check(locked.disabled and locked.focus_mode == Control.FOCUS_NONE, "unimplemented commander stays disabled and unfocusable")
-		check(locked.scale.is_equal_approx(Vector2.ONE) and locked.self_modulate == Color.WHITE, "disabled commander has no hover or press animation")
-		check(session.block_war_commander == &"squirrel", "disabled commander rejects the native click")
-	for node_name: String in ["Animal0", "Animal5", "Next", "Back"]:
-		check(picker.get_global_rect().encloses(picker.get_node("%" + node_name).get_global_rect()), "commander %s stays on screen at %s" % [node_name, resolution])
-	_move(Vector2(4, 4))
-
-func _check_map(session: Node, resolution: Vector2i) -> void:
-	session.block_war_map_id = "rift"
-	change_scene_to_file(MAP_PICKER)
-	await scene_changed
+	_check_restored(baseline, "solo panel reopened at %s" % resolution)
+	check(lobby.mode == "1v1", "rapid mode changes retain final RTS mode")
+	_click(lobby.get_node("%Multiplayer"))
+	await _settle(0.04)
+	lobby._on_close_multiplayer()
+	check(not lobby.get_node("%OnlinePanel").visible, "online panel closes immediately during entrance")
+	_click(lobby.get_node("%Multiplayer"))
 	await _settle()
-	var picker: Control = current_scene
-	_check_entrance(picker, "direct map %s" % resolution)
-	var baseline := _capture(picker, MAP_DETAILS)
-	for choice: Vector2i in [Vector2i(0, 1), Vector2i(1, 0), Vector2i(2, 1), Vector2i(0, 0)]:
-		_click(picker.get_node("%%Size%d" % choice.x))
-		await _settle(0.025)
-		_click(picker.get_node("%%Map%d" % choice.y))
-		await _settle(0.035)
-	_move(Vector2(4, 4))
-	await _settle()
-	check(session.block_war_map_id == "rift" and picker.get_node("%Preview").definition == picker.selected,
-		"rapid native map clicks keep preview and session selection together at %s" % resolution)
-	_check_restored(baseline, "rapid map switching %s" % resolution)
-	_click(picker.get_node("%Map0"))
-	check(is_equal_approx(picker.get_node("%Preview").modulate.a, 1.0), "reselecting the map does not restart its fade")
-	check(not picker.get_node("%Preview").get_meta(UIMotion.PANEL_META).active, "reselecting the map creates no new preview animation")
-	for node_name: String in ["Preview", "MapName", "Description", "Start", "OpponentCommander3"]:
-		check(picker.get_global_rect().encloses(picker.get_node("%" + node_name).get_global_rect()), "map %s stays on screen at %s" % [node_name, resolution])
+	check(is_equal_approx(lobby.get_node("%OnlinePanel").modulate.a, 1.0), "online panel reopens fully opaque")
+	lobby._on_close_multiplayer()
 	_move(Vector2(4, 4))
 
 func _check_settings(settings: GameSettings) -> void:

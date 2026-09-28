@@ -18,6 +18,9 @@ func _ready() -> void:
 	_begin.call_deferred()
 
 func _begin() -> void:
+	# A deferred scene change can detach this menu before this callback runs.
+	if not is_inside_tree():
+		return
 	# Containers reset child scale during initial layout (Control documentation).
 	# A node-bound connection also disappears if rapid navigation frees this menu.
 	get_tree().process_frame.connect(_after_layout, CONNECT_ONE_SHOT)

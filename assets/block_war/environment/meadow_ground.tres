@@ -1,8 +1,0 @@
-[gd_resource type="ShaderMaterial" load_steps=3 format=3]
-
-[ext_resource type="Shader" path="res://assets/block_war/environment/forest_ground.gdshader" id="shader"]
-[ext_resource type="Texture2D" path="res://assets/block_war/environment/meadow_noise.tres" id="noise"]
-
-[resource]
-shader = ExtResource("shader")
-shader_parameter/meadow_noise = ExtResource("noise")

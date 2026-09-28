@@ -1,8 +1,5 @@
 extends Control
 ## Saved native controls edit a draft. Apply is atomic; display changes require an in-game countdown.
-const LOBBY_THEME := preload("res://assets/ui/medieval/theme.tres")
-const CAMPAIGN_THEME := preload("res://assets/ui/block_war/menu_theme.tres")
-var campaign := false
 var draft: Dictionary = {}
 var rebinding_action := ""
 var _refreshing := false
@@ -78,21 +75,6 @@ func refresh(values: Dictionary) -> void:
 	%Status.text = "Esc 返回上层 · 点击「应用」保存设置"
 	_refreshing = false
 
-func set_campaign_style(value: bool) -> void:
-	if campaign == value:
-		return
-	campaign = value
-	theme = CAMPAIGN_THEME if campaign else LOBBY_THEME
-	$Shade.color = Color(0.79, 0.86, 0.79, 0.97) if campaign else Color(0.025, 0.023, 0.017, 0.80)
-	$DisplayConfirm/Shade.color = Color(0.79, 0.86, 0.79, 0.96) if campaign else Color(0.025, 0.023, 0.017, 0.86)
-	$Center/Panel.custom_minimum_size = Vector2(1200, 736) if campaign else Vector2(980, 650)
-	$Center/Panel/Layout/Heading/Brand.text = "积木战争  /  设置" if campaign else "积木争霸  /  设置"
-	%Categories.get_node("FirstPerson").visible = not campaign
-	var active := "Graphics"
-	for category: Button in %Categories.get_children():
-		if category.button_pressed and category.visible:
-			active = category.name
-	show_page(active)
 
 func _uses_menu_motion() -> bool:
 	var scene: Node = get_tree().current_scene
@@ -143,20 +125,17 @@ func _slider_changed(value: float, key: String) -> void:
 
 func show_page(page: String) -> void:
 	rebinding_action = ""
-	var content_page := "WarHotkeys" if campaign and page == "Hotkeys" else page
-	for child: Control in pages.get_children(): child.visible = String(child.name) == content_page
+	for child: Control in pages.get_children(): child.visible = String(child.name) == page
 	for category: Button in %Categories.get_children(): category.set_pressed_no_signal(String(category.name) == page)
 	if _uses_menu_motion():
 		if visible:
 			UIMotion.reveal_menu(%SectionTitle)
 			UIMotion.reveal_menu(%SectionHint, Vector2.ZERO, 0.025)
-			UIMotion.reveal_menu(pages.get_node(content_page), Vector2(0, 8), 0.05)
+			UIMotion.reveal_menu(pages.get_node(page), Vector2(0, 8), 0.05)
 	else:
-		UIMotion.reveal(pages.get_node(content_page), Vector2(0, 8))
+		UIMotion.reveal(pages.get_node(page), Vector2(0, 8))
 	%SectionTitle.text = {"Graphics":"显示", "Audio":"声音", "Controls":"镜头与操作", "Hotkeys":"热键", "FirstPerson":"第一人称"}[page]
 	%SectionHint.text = {"Graphics":"分辨率用于窗口尺寸或全屏 3D 渲染。", "Audio":"总音量控制所有声音；背景音乐可独立调节。", "Controls":"镜头响应与窗口边缘移动。", "Hotkeys":"点击按键后重新绑定。Ctrl 建组，Shift 追加。", "FirstPerson":"沙盒英雄的视野角、鼠标与舒适性。"}[page]
-	if campaign and page == "Hotkeys":
-		%SectionHint.text = "积木战争的操作速查。"
 	if not draft.is_empty(): _update_hotkeys()
 
 func begin_rebind(action: String) -> void:

@@ -1,7 +1,7 @@
 ﻿[CmdletBinding()]
 param(
     [string]$GameDirectory = $PSScriptRoot,
-    [string]$OutputDirectory = (Join-Path ([Environment]::GetFolderPath('MyDocuments')) '积木争霸-诊断')
+    [string]$OutputDirectory = (Join-Path ([Environment]::GetFolderPath('MyDocuments')) 'Block-RTS-诊断')
 )
 
 # Local, read-only diagnosis. This script never uploads files or changes settings.
@@ -11,11 +11,11 @@ $ErrorActionPreference = 'Stop'
 
 $gameRoot = (Resolve-Path -LiteralPath $GameDirectory).Path
 if (-not (Test-Path -LiteralPath $gameRoot -PathType Container)) {
-    throw 'GameDirectory must be the folder containing 积木争霸.exe.'
+    throw 'GameDirectory must be the folder containing Block-RTS.exe.'
 }
 $outputRoot = [IO.Path]::GetFullPath($OutputDirectory)
 $stamp = (Get-Date).ToUniversalTime().ToString('yyyyMMdd-HHmmss-fff')
-$sessionName = '积木争霸-' + $stamp + '-' + [Guid]::NewGuid().ToString('N').Substring(0, 8)
+$sessionName = 'Block-RTS-' + $stamp + '-' + [Guid]::NewGuid().ToString('N').Substring(0, 8)
 $sessionRoot = Join-Path $outputRoot $sessionName
 [IO.Directory]::CreateDirectory($sessionRoot) | Out-Null
 $issues = [Collections.Generic.List[string]]::new()
@@ -28,12 +28,12 @@ function Write-JsonFile {
 
 function Test-GameExecutableName {
     param([string]$Value)
-    return $Value.Trim().Trim('"') -match '(?:^|[\\/])(?:积木争霸|Godot(?:[_-][^\\/]*)?)\.exe$'
+    return $Value.Trim().Trim('"') -match '(?:^|[\\/])(?:Block-RTS|Godot(?:[_-][^\\/]*)?)\.exe$'
 }
 
 # Package metadata and hashes let a report be matched to the exact installed build.
 $packageFiles = @()
-foreach ($fileName in @('积木争霸.exe', '积木争霸.pck')) {
+foreach ($fileName in @('Block-RTS.exe', 'Block-RTS.pck')) {
     $filePath = Join-Path $gameRoot $fileName
     if (-not (Test-Path -LiteralPath $filePath -PathType Leaf)) {
         $issues.Add('Package file missing: ' + $fileName)
@@ -91,7 +91,7 @@ try {
 
 # Read exactly the configured Godot user://logs folder, not the wider userdata
 # tree. FileShare.ReadWrite permits collection while the game is still running.
-$logRoot = Join-Path $env:APPDATA 'Godot/app_userdata/积木争霸/logs'
+$logRoot = Join-Path $env:APPDATA 'Godot/app_userdata/Block-RTS/logs'
 $logInventory = @()
 if (Test-Path -LiteralPath $logRoot -PathType Container) {
     $destinationLogs = Join-Path $sessionRoot 'game-logs'
@@ -164,7 +164,7 @@ $dumpRoot = Join-Path $env:LOCALAPPDATA 'CrashDumps'
 $dumpInventory = @()
 if (Test-Path -LiteralPath $dumpRoot -PathType Container) {
     try {
-        foreach ($dump in @(Get-ChildItem -LiteralPath $dumpRoot -File | Where-Object { $_.Name -match '^(?:积木争霸|Godot)[._-].*\.dmp$' })) {
+        foreach ($dump in @(Get-ChildItem -LiteralPath $dumpRoot -File | Where-Object { $_.Name -match '^(?:Block-RTS|Godot)[._-].*\.dmp$' })) {
             $dumpInventory += [PSCustomObject]@{ name = $dump.Name; bytes = $dump.Length; last_write_utc = $dump.LastWriteTimeUtc.ToString('o') }
         }
     } catch {
@@ -183,7 +183,7 @@ Write-JsonFile 'collection-status.json' @{
 }
 
 $readme = @'
-积木争霸 - LOCAL DIAGNOSTICS
+Block-RTS - LOCAL DIAGNOSTICS
 
 This archive contains game logs, recent game/Godot crash/hang event records, Windows,
 GPU and memory information, and the installed EXE/PCK versions and SHA-256 hashes.

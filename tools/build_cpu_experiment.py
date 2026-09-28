@@ -31,8 +31,8 @@ def main() -> None:
     output.mkdir(parents=True, exist_ok=True)
     logs = ROOT / '.local/cpu-experiment-export'
     logs.mkdir(parents=True, exist_ok=True)
-    executable = output / '积木争霸.exe'
-    pack = output / '积木争霸.pck'
+    executable = output / 'Block-RTS.exe'
+    pack = output / 'Block-RTS.pck'
     command = [str(args.godot.resolve()), '--headless', '--path', str(ROOT),
                '--log-file', str(logs / 'engine.log'), '--export-release', 'Windows Desktop', str(executable)]
     with (logs / 'stdout.log').open('wb') as stdout, (logs / 'stderr.log').open('wb') as stderr:
@@ -48,10 +48,10 @@ def main() -> None:
         raise RuntimeError('Experimental export failed; inspect the isolated export logs.')
     readme = output / 'START_HERE.txt'
     readme.write_text((ROOT / 'docs/cpu-experiment.md').read_text(encoding='utf-8'), encoding='utf-8')
-    archive = output.parent / ('积木争霸-' + release + '-Windows-x64.zip')
+    archive = output.parent / ('Block-RTS-' + release + '-Windows-x64.zip')
     with zipfile.ZipFile(archive, 'w', zipfile.ZIP_DEFLATED, compresslevel=6) as package:
         for path in (executable, pack, readme):
-            package.write(path, '积木争霸-CPU实验版/' + path.name)
+            package.write(path, 'Block-RTS-CPU实验版/' + path.name)
     receipt = {
         'release': release,
         'source_commit': subprocess.check_output(['git', '-C', str(ROOT), 'rev-parse', 'HEAD'], text=True).strip(),

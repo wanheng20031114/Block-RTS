@@ -12,7 +12,7 @@ import time
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("executable", type=Path, help="积木争霸.exe; or Godot_console.exe with --project")
+    parser.add_argument("executable", type=Path, help="Block-RTS.exe; or Godot_console.exe with --project")
     parser.add_argument("--project", type=Path, help="Source validation only: Godot project directory")
     parser.add_argument("--mode", choices=("1v1", "2v2", "3v3", "4v4", "2v2v2", "ffa"), default="1v1")
     parser.add_argument("--empty-slots", default="", help="Comma-separated non-host seat IDs, for example 5,6 for a 4v2 match")

@@ -68,7 +68,7 @@ layout_mode = 2
 [node name="Brand" type="Label" parent="Menu/Center/Panel/Layout/Heading"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "积木争霸  /  设置"
+text = "Block-RTS  /  设置"
 theme_override_font_sizes/font_size = 29
 theme_type_variation = &"SettingsText"
 theme_override_constants/shadow_offset_y = 0
@@ -434,7 +434,7 @@ value = 50
 
 [node name="MusicTip" type="Label" parent="Menu/Center/Panel/Layout/Body/Content/Pages/Audio"]
 layout_mode = 2
-text = "积木战争每局随机选曲并循环，暂停时继续播放。"
+text = "音乐音量独立于界面与战斗音效。"
 theme_override_font_sizes/font_size = 15
 theme_type_variation = &"SettingsText"
 theme_override_constants/shadow_offset_y = 0
@@ -1317,99 +1317,3 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "保留设置"
-
-[node name="WarHotkeys" type="VBoxContainer" parent="Menu/Center/Panel/Layout/Body/Content/Pages"]
-visible = false
-layout_mode = 2
-theme_override_constants/separation = 16
-
-[node name="Row0" type="HBoxContainer" parent="Menu/Center/Panel/Layout/Body/Content/Pages/WarHotkeys"]
-layout_mode = 2
-custom_minimum_size = Vector2(0,35)
-
-[node name="Label" type="Label" parent="Menu/Center/Panel/Layout/Body/Content/Pages/WarHotkeys/Row0"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "派兵比例"
-
-[node name="Key" type="Label" parent="Menu/Center/Panel/Layout/Body/Content/Pages/WarHotkeys/Row0"]
-layout_mode = 2
-text = "1 / 2 / 3 / 4"
-
-[node name="Row1" type="HBoxContainer" parent="Menu/Center/Panel/Layout/Body/Content/Pages/WarHotkeys"]
-layout_mode = 2
-custom_minimum_size = Vector2(0,35)
-
-[node name="Label" type="Label" parent="Menu/Center/Panel/Layout/Body/Content/Pages/WarHotkeys/Row1"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "施放技能"
-
-[node name="Key" type="Label" parent="Menu/Center/Panel/Layout/Body/Content/Pages/WarHotkeys/Row1"]
-layout_mode = 2
-text = "按住 Q / W / E / R，松手施放"
-
-[node name="Row2" type="HBoxContainer" parent="Menu/Center/Panel/Layout/Body/Content/Pages/WarHotkeys"]
-layout_mode = 2
-custom_minimum_size = Vector2(0,35)
-
-[node name="Label" type="Label" parent="Menu/Center/Panel/Layout/Body/Content/Pages/WarHotkeys/Row2"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "取消技能"
-
-[node name="Key" type="Label" parent="Menu/Center/Panel/Layout/Body/Content/Pages/WarHotkeys/Row2"]
-layout_mode = 2
-text = "鼠标右键"
-
-[node name="Row3" type="HBoxContainer" parent="Menu/Center/Panel/Layout/Body/Content/Pages/WarHotkeys"]
-layout_mode = 2
-custom_minimum_size = Vector2(0,35)
-
-[node name="Label" type="Label" parent="Menu/Center/Panel/Layout/Body/Content/Pages/WarHotkeys/Row3"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "移动镜头"
-
-[node name="Key" type="Label" parent="Menu/Center/Panel/Layout/Body/Content/Pages/WarHotkeys/Row3"]
-layout_mode = 2
-text = "屏幕边缘 / 中键拖动"
-
-[node name="Row4" type="HBoxContainer" parent="Menu/Center/Panel/Layout/Body/Content/Pages/WarHotkeys"]
-layout_mode = 2
-custom_minimum_size = Vector2(0,35)
-
-[node name="Label" type="Label" parent="Menu/Center/Panel/Layout/Body/Content/Pages/WarHotkeys/Row4"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "缩放视野"
-
-[node name="Key" type="Label" parent="Menu/Center/Panel/Layout/Body/Content/Pages/WarHotkeys/Row4"]
-layout_mode = 2
-text = "鼠标滚轮"
-
-[node name="Row5" type="HBoxContainer" parent="Menu/Center/Panel/Layout/Body/Content/Pages/WarHotkeys"]
-layout_mode = 2
-custom_minimum_size = Vector2(0,35)
-
-[node name="Label" type="Label" parent="Menu/Center/Panel/Layout/Body/Content/Pages/WarHotkeys/Row5"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "暂停 / 返回"
-
-[node name="Key" type="Label" parent="Menu/Center/Panel/Layout/Body/Content/Pages/WarHotkeys/Row5"]
-layout_mode = 2
-text = "Esc"
-
-[node name="Row6" type="HBoxContainer" parent="Menu/Center/Panel/Layout/Body/Content/Pages/WarHotkeys"]
-layout_mode = 2
-custom_minimum_size = Vector2(0,35)
-
-[node name="Label" type="Label" parent="Menu/Center/Panel/Layout/Body/Content/Pages/WarHotkeys/Row6"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "查看玩法"
-
-[node name="Key" type="Label" parent="Menu/Center/Panel/Layout/Body/Content/Pages/WarHotkeys/Row6"]
-layout_mode = 2
-text = "F1"

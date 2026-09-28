@@ -1,8 +1,0 @@
-[gd_resource type="Curve" format=3]
-
-[resource]
-min_value = -8.0
-max_value = 8.0
-bake_resolution = 256
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.13, -0.1), 0.0, 0.0, 0, 0, Vector2(0.39, 0.07), 0.0, 0.0, 0, 0, Vector2(0.64, -0.024), 0.0, 0.0, 0, 0, Vector2(0.83, 0.008), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 6

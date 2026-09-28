@@ -79,10 +79,10 @@ func _run() -> void:
 	check(not lobby.get_node("%OnlinePanel").visible, "panel stays closed after late room replies")
 
 	await join_guest(guest)
-	lobby._on_open_block_war()
+	lobby._on_open_sandbox()
 	check(await until(func(): return host.room.slots[1].kind == "open"), "actual offline mode switch frees guest seat")
 	check(await until(func(): return not session.transition.busy), "scene transition completes independently")
-	check(current_scene.scene_file_path == "res://scenes/block_war/commander_select.tscn", "offline destination opens")
+	check(current_scene.scene_file_path == "res://scenes/sandbox.tscn", "offline destination opens")
 
 	await join_guest(guest)
 	server.set_process(false)

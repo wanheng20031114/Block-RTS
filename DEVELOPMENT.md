@@ -1,10 +1,10 @@
-# Block Conquest · 积木争霸 · 实施约定
+# Block-RTS · 实施约定
 
-英文项目名为 **Block Conquest**，仓库与工作目录名为 **`Block-Conquest`**。当前仓库为 `https://github.com/wanheng20031114/Block-Conquest.git`；本机目录为 `C:/Users/wh/Documents/Block-Conquest`。开发工具从项目根目录运行，资源和文档链接优先使用相对路径。
+独立项目与工作目录名为 **`Block-RTS`**。仓库为 [wanheng20031114/Block-RTS](https://github.com/wanheng20031114/Block-RTS)；本机目录为 `C:/Users/wh/Documents/godot/Block-RTS`。开发工具从项目根目录运行，资源和文档链接使用项目内路径。
 
-已有克隆可运行 `git remote set-url origin https://github.com/wanheng20031114/Block-Conquest.git` 更新远程地址。中文游戏名与发布程序继续使用“积木争霸”；已发布资产的文件名、历史验证记录及线上中继的服务名与 TLS 身份保持各自原有值。
+本项目保留 RTS、联机、林海远征、自由沙盘、英雄及 MOBA 模式；积木战争由另一个独立项目维护。发布程序使用 `Block-RTS.exe` / `Block-RTS.pck`。历史验证报告与旧发布物保持历史名称；线上中继的服务名、端口与 TLS 身份不因产品拆分而改变。
 
-Godot 4.6.3 原生 3D RTS。暖砂岩、蓝金屋顶与部队服饰，45° 正交战场；当前版本 0.9.0、协议 8。完整规则见 README 与 `report/balance-0.8.2.md`，不要从旧报告或历史生成器恢复过时数值。
+Godot 4.6.3 原生 3D RTS。暖砂岩、蓝金屋顶与部队服饰，45° 正交战场；当前发行版本和协议分别以 `NetworkProtocol.RELEASE_ID` 与 `VERSION` 为准。完整规则见 README 与 `report/balance-0.8.2.md`，不要从旧报告或历史生成器恢复过时数值。
 
 ## 代码与数据边界
 
@@ -24,13 +24,13 @@ Godot 4.6.3 原生 3D RTS。暖砂岩、蓝金屋顶与部队服饰，45° 正�
 
 地图构建脚本为 `tools/build_skirmish_maps.py`；六张独立地图在 `data/maps/` 与 `scenes/maps/`。4v4 为 192×184，八人乱战为 192×192，每席具有出生矿、扩张矿与左侧免费防御塔。占地、道路、出生点与矿槽验证是重建的一部分。
 
-大厅与图鉴以原生 Control/Container、SubViewport 和游戏模型组成。图鉴显示时只运行当前模型，关闭时停用预览。设置使用本地 ConfigFile；更名迁移仅复制旧版两份偏好文件，已有新版配置优先。
+大厅与图鉴以原生 Control/Container、SubViewport 和游戏模型组成。图鉴显示时只运行当前模型，关闭时停用预览。设置使用本地 ConfigFile；首次启动从原「积木争霸」用户目录复制 `settings.cfg`、`lobby_preferences.cfg`、`rogue_run.json`；已有 Block-RTS 文件优先，不写回原目录，也不复制日志或网络会话。
 
 阵营色通过共享材质和实例参数应用：自己蓝色、盟友黄色、敌方红色。CombatLayers 为八个阵营分配独立单位及建筑层，新增模式必须检查全部阵营组合。
 
 ## 构建与联机
 
-修改规则或地图后运行 `python tools/build_content_manifest.py`，再使用 `tools/build_windows.ps1 -VersionedOutput 0.9.0` 导出。发布程序为 `积木争霸.exe` 和同目录 PCK，ZIP 仅包含五项明确交付文件；测试和本机密钥均不进入包。
+修改规则或地图后运行 `python tools/build_content_manifest.py`，再使用 `tools/build_windows.ps1` 导出。发布程序为 `Block-RTS.exe` 和同目录 PCK，ZIP 仅包含六项明确交付文件；测试和本机密钥均不进入包。
 
 中继专用服务为 `jimu-zhengba-relay.service`，端口 UDP 24571，原生 DTLS 验证固定受信身份。服务器使用隔离且校验 SHA256 的 Godot 4.7.2 运行时。详见 `server/README.md`。更名时旧服务名仅用于迁移；不可更改其他服务或其端口。
 

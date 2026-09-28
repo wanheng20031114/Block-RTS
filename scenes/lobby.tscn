@@ -91,7 +91,7 @@ script = ExtResource("script")
 
 [node name="MenuEntrance" type="Node" parent="."]
 script = ExtResource("menu_entrance")
-sections = Array[NodePath]([NodePath("CanvasLayer/UI/Brand"), NodePath("CanvasLayer/UI/MainMenu/SoloMenu"), NodePath("CanvasLayer/UI/MainMenu/Multiplayer"), NodePath("CanvasLayer/UI/MainMenu/RogueMode"), NodePath("CanvasLayer/UI/MainMenu/BlockWarMode"), NodePath("CanvasLayer/UI/MainMenu/MobaMode"), NodePath("CanvasLayer/UI/MainMenu/Codex"), NodePath("CanvasLayer/UI/MainMenu/Sandbox"), NodePath("CanvasLayer/UI/MainMenu/UtilityActions"), NodePath("CanvasLayer/UI/Version")])
+sections = Array[NodePath]([NodePath("CanvasLayer/UI/Brand"), NodePath("CanvasLayer/UI/MainMenu/SoloMenu"), NodePath("CanvasLayer/UI/MainMenu/Multiplayer"), NodePath("CanvasLayer/UI/MainMenu/RogueMode"), NodePath("CanvasLayer/UI/MainMenu/MobaMode"), NodePath("CanvasLayer/UI/MainMenu/Codex"), NodePath("CanvasLayer/UI/MainMenu/Sandbox"), NodePath("CanvasLayer/UI/MainMenu/UtilityActions"), NodePath("CanvasLayer/UI/Version")])
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1939480643]
 environment = SubResource("World")
@@ -192,7 +192,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.94,0.95,0.86,1)
 theme_override_fonts/font = ExtResource("med_title")
 theme_override_font_sizes/font_size = 66
-text = "积木争霸"
+text = "Block-RTS"
 
 [node name="Subtitle" type="Label" parent="CanvasLayer/UI/Brand" unique_id=1133203978]
 layout_mode = 2
@@ -240,15 +240,6 @@ tooltip_text = "单人肉鸽 · 森林探索、军团编队与前哨站作战"
 alignment = 1
 theme_override_fonts/font = ExtResource("med_title")
 
-[node name="BlockWarMode" type="Button" parent="CanvasLayer/UI/MainMenu"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 56)
-layout_mode = 2
-theme_override_font_sizes/font_size = 25
-text = "积木战争"
-tooltip_text = "据点争夺 · 派遣民兵穿越裂谷、攻占建筑、施放四大军令"
-alignment = 1
-theme_override_fonts/font = ExtResource("med_title")
 
 [node name="MobaMode" type="Button" parent="CanvasLayer/UI/MainMenu"]
 unique_name_in_owner = true
@@ -1255,7 +1246,6 @@ one_shot = true
 [connection signal="pressed" from="CanvasLayer/UI/MainMenu/Codex" to="." method="_on_open_codex"]
 [connection signal="pressed" from="CanvasLayer/UI/MainMenu/Sandbox" to="." method="_on_open_sandbox"]
 [connection signal="pressed" from="CanvasLayer/UI/MainMenu/RogueMode" to="." method="_on_open_rogue"]
-[connection signal="pressed" from="CanvasLayer/UI/MainMenu/BlockWarMode" to="." method="_on_open_block_war"]
 [connection signal="pressed" from="CanvasLayer/UI/MainMenu/MobaMode" to="." method="_on_open_moba"]
 [connection signal="pressed" from="CanvasLayer/UI/MainMenu/UtilityActions/Settings" to="." method="_on_settings"]
 [connection signal="pressed" from="CanvasLayer/UI/MainMenu/UtilityActions/QuitGame" to="." method="_on_quit_game"]

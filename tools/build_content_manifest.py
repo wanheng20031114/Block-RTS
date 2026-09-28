@@ -18,7 +18,7 @@ def canonical_bytes(path: Path) -> bytes:
 def manifest_bytes(root: Path = ROOT) -> bytes:
     # These local-only modes cannot be recruited or deserialized in network
     # matches. Keep their local balancing outside the relay's rules contract.
-    rules = [p for p in root.glob('data/**/*.tres') if p.relative_to(root / 'data').parts[0] not in {'sandbox', 'moba', 'block_war'}]
+    rules = [p for p in root.glob('data/**/*.tres') if p.relative_to(root / 'data').parts[0] not in {'sandbox', 'moba'}]
     paths = sorted([*rules, *root.glob('scenes/maps/*')])
     files = {path.relative_to(root).as_posix(): hashlib.sha256(canonical_bytes(path)).hexdigest()
              for path in paths if path.is_file()}

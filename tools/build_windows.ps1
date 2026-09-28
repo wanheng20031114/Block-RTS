@@ -8,8 +8,8 @@
 $ErrorActionPreference = 'Stop'
 $projectRoot = Split-Path -Parent $PSScriptRoot
 $buildRoot = Join-Path $projectRoot ('builds/windows' + $(if ($VersionedOutput) { '-' + $VersionedOutput } else { '' }))
-$executable = Join-Path $buildRoot '积木争霸.exe'
-$archive = Join-Path $projectRoot ('builds/积木争霸-' + $(if ($VersionedOutput) { $VersionedOutput + '-' } else { '' }) + 'Windows-x64.zip')
+$executable = Join-Path $buildRoot 'Block-RTS.exe'
+$archive = Join-Path $projectRoot ('builds/Block-RTS-' + $(if ($VersionedOutput) { $VersionedOutput + '-' } else { '' }) + 'Windows-x64.zip')
 if ($VersionedOutput) {
     $presetText = Get-Content -LiteralPath (Join-Path $projectRoot 'export_presets.cfg') -Raw -Encoding UTF8
     $presetVersion = [regex]::Match($presetText, '(?m)^application/file_version="([^"]+)"').Groups[1].Value
@@ -30,7 +30,7 @@ if ($PackOnly) {
     $launcherVersion = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($executable).FileVersion
     if (-not $releaseVersionMatch.Success -or $launcherVersion -ne $releaseVersionMatch.Groups[1].Value) { throw 'Launcher version differs from the export preset; run a full export first.' }
     $exportMode = '--export-pack'
-    $exportTarget = Join-Path $buildRoot '积木争霸.pck'
+    $exportTarget = Join-Path $buildRoot 'Block-RTS.pck'
 } else {
     $exportMode = '--export-release'
     $exportTarget = $executable
@@ -57,7 +57,7 @@ $packageStream = [System.IO.File]::Open($archive, [System.IO.FileMode]::Create)
 try {
     $packageZip = [System.IO.Compression.ZipArchive]::new($packageStream, [System.IO.Compression.ZipArchiveMode]::Create, $true)
     try {
-        foreach ($packageName in @('积木争霸.exe', '积木争霸.pck', 'START_HERE.txt', 'FONT_LICENSE.txt', 'collect_diagnostics.ps1', 'COLLECT_DIAGNOSTICS.cmd')) {
+        foreach ($packageName in @('Block-RTS.exe', 'Block-RTS.pck', 'START_HERE.txt', 'FONT_LICENSE.txt', 'collect_diagnostics.ps1', 'COLLECT_DIAGNOSTICS.cmd')) {
             [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($packageZip, (Join-Path $buildRoot $packageName), ('windows/' + $packageName), [System.IO.Compression.CompressionLevel]::Optimal) | Out-Null
         }
     } finally {

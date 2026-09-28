@@ -1,0 +1,97 @@
+{
+  "format": "48 kHz mono PCM16 WAV",
+  "origin": "Shared menu effects copied without modification from the former combined game.",
+  "license": "CC0-1.0 and CC-BY-3.0, listed per source; see ../CREDITS.md and ../licenses",
+  "files": [
+    {
+      "file": "war_ratio_01.wav",
+      "description": "Light menu note, shortened for repeated dispatch-ratio changes",
+      "seconds": 0.14,
+      "active_rms_db": -22.02,
+      "true_peak_db": -11.84,
+      "bytes": 13484,
+      "sha256": "8c589f1956e0cf8b64249e658b56e03914e4b80418a8a317807b3db65ceb43af",
+      "processing": "Trim, boundary fades, small variant rate change where noted, linear gain/true-peak ceiling; no saturation",
+      "sources": [
+        {
+          "path": "virix_ui1/Menu1B.wav",
+          "sha256": "a047554eedb0e2ef310283854d1e0e82f6c2ff72a710d5e0ccbcbad62fdf53e1",
+          "license": "CC-BY-3.0",
+          "page": "https://opengameart.org/content/ui-and-item-sounds-sample-1"
+        }
+      ]
+    },
+    {
+      "file": "war_ratio_02.wav",
+      "description": "Light menu note, shortened for repeated dispatch-ratio changes",
+      "seconds": 0.14,
+      "active_rms_db": -22.02,
+      "true_peak_db": -11.81,
+      "bytes": 13484,
+      "sha256": "bdfc99084be13f330df1dc7e4734f053d3b2a00e7510cbb92cb7ba6363101783",
+      "processing": "Trim, boundary fades, small variant rate change where noted, linear gain/true-peak ceiling; no saturation",
+      "sources": [
+        {
+          "path": "virix_ui1/Menu1B.wav",
+          "sha256": "a047554eedb0e2ef310283854d1e0e82f6c2ff72a710d5e0ccbcbad62fdf53e1",
+          "license": "CC-BY-3.0",
+          "page": "https://opengameart.org/content/ui-and-item-sounds-sample-1"
+        }
+      ]
+    },
+    {
+      "file": "war_order_01.wav",
+      "description": "One restrained 160 ms dry wood-block contact on dispatch release; no layers or melody",
+      "seconds": 0.16,
+      "active_rms_db": -23.47,
+      "true_peak_db": -7.97,
+      "bytes": 15404,
+      "sha256": "143b4dc10b4d3d0008110ee2fc4edafe8535a1dee2158f962967e80158164561",
+      "processing": "Trim, boundary fades, small variant rate change where noted, linear gain/true-peak ceiling; no saturation",
+      "sources": [
+        {
+          "path": "kenney_impact/impactWood_medium_001.ogg",
+          "sha256": "15271dbe8e2872dbb0ff1aeb7b12b2d2b92b7c1951c88532b9ab9158c36dfc73",
+          "license": "CC0-1.0",
+          "page": "https://kenney.nl/assets/impact-sounds"
+        }
+      ]
+    },
+    {
+      "file": "war_order_02.wav",
+      "description": "One restrained 160 ms dry wood-block contact on dispatch release; no layers or melody",
+      "seconds": 0.16,
+      "active_rms_db": -23.71,
+      "true_peak_db": -8.45,
+      "bytes": 15404,
+      "sha256": "14dc0e0271715a607a9231679fac72012fd5233b9cb5360a86cddade6fd4352b",
+      "processing": "Trim, boundary fades, small variant rate change where noted, linear gain/true-peak ceiling; no saturation",
+      "sources": [
+        {
+          "path": "kenney_impact/impactWood_medium_002.ogg",
+          "sha256": "3f3f1917428b828f733a963167833c707bf88296ff158e1559c57c5cb813d799",
+          "license": "CC0-1.0",
+          "page": "https://kenney.nl/assets/impact-sounds"
+        }
+      ]
+    },
+    {
+      "file": "war_cancel_01.wav",
+      "description": "Quieter, shorter version of the back cue for cancellation",
+      "seconds": 0.25,
+      "active_rms_db": -22.01,
+      "true_peak_db": -11.75,
+      "bytes": 24044,
+      "sha256": "c07a94f4def59a3e746c02e006cd446ff63f8600f66cfd8222bb46d04f2c2a96",
+      "processing": "Trim, boundary fades, small variant rate change where noted, linear gain/true-peak ceiling; no saturation",
+      "sources": [
+        {
+          "path": "virix_ui/MENU B_Back.wav",
+          "sha256": "84f3a38d6557b5219dd8a69673b201242da49aeb2c0e95ec948562591d0230c9",
+          "license": "CC-BY-3.0",
+          "page": "https://opengameart.org/content/ui-sound-effects-pack"
+        }
+      ]
+    }
+  ]
+}

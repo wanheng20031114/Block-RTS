@@ -1,9 +1,0 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3]
-
-[ext_resource type="Shader" path="res://assets/block_war/environment/nature_surface.gdshader" id="shader"]
-
-[resource]
-shader = ExtResource("shader")
-shader_parameter/wind_amount = 0.055
-shader_parameter/wind_start = 0.025
-shader_parameter/wind_full = 0.6

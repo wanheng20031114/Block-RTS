@@ -17,8 +17,8 @@ VERSION_SUFFIX = BUILD.replace(".", "")
 def machine_activity() -> dict:
     # Read only a narrow public inventory, never whole process command lines.
     query = r"""
-    $rows = @(Get-CimInstance Win32_Process | Where-Object { $_.Name -match '^(Godot|Godot_console|积木争霸|python)\.exe$' } | ForEach-Object {
-        $role = if ($_.CommandLine -match '--headless|--check-only|--script|network_game_live_runner|run_release_match_smoke') { 'validation_helper' } elseif ($_.CommandLine -match '--editor') { 'user_editor' } elseif ($_.Name -eq '积木争霸.exe') { 'user_game' } else { 'background_process' }
+    $rows = @(Get-CimInstance Win32_Process | Where-Object { $_.Name -match '^(Godot|Godot_console|Block-RTS|python)\.exe$' } | ForEach-Object {
+        $role = if ($_.CommandLine -match '--headless|--check-only|--script|network_game_live_runner|run_release_match_smoke') { 'validation_helper' } elseif ($_.CommandLine -match '--editor') { 'user_editor' } elseif ($_.Name -eq 'Block-RTS.exe') { 'user_game' } else { 'background_process' }
         [pscustomobject]@{ pid=$_.ProcessId; name=$_.Name; role=$role }
     })
     [pscustomobject]@{ processes=$rows; cpu=(Get-CimInstance Win32_Processor | Select-Object -First 1 -ExpandProperty Name) } | ConvertTo-Json -Depth 4 -Compress

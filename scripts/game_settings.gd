@@ -64,7 +64,7 @@ func _enter_tree() -> void:
 	var previous_directory := current_directory.get_base_dir().path_join(UserDataMigration.PREVIOUS_PROJECT_DIRECTORY)
 	var error := UserDataMigration.migrate(previous_directory, current_directory)
 	if error != OK:
-		push_warning("积木争霸：旧版偏好设置迁移失败，错误码 %d" % error)
+		push_warning("Block-RTS：旧版设置与远征存档迁移失败，错误码 %d" % error)
 
 func _ready() -> void:
 	menu.hide()
@@ -213,8 +213,6 @@ func binding_error(action: String, key: Key, keys: Dictionary) -> String:
 
 func open_menu() -> void:
 	if is_open(): return
-	var scene := get_tree().current_scene
-	menu.set_campaign_style(scene != null and scene.scene_file_path.begins_with("res://scenes/block_war/"))
 	menu.refresh(snapshot())
 	menu.show()
 	menu.open_motion()

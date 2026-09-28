@@ -2,7 +2,7 @@
 
 原模式音效包含 22 类、56 个独立变体，统一 **48 kHz、单声道、PCM16 WAV**。真实 CC0 拟音与项目自制合成层的来源严格区分，许可与处理说明见 `CREDITS.md`。
 
-积木战争另有两首正式背景音乐 **战斗 BGM1 · 夺桥·稳步推进 A**、**战斗 BGM2 · 轻装·轻律回环 A**，位于 `block_war/music/`。原生 `AudioStreamRandomizer` 每次开局等概率选一首，由该曲的 MP3 循环属性整局播放，使用独立 BGM 总线和音乐设置；Suno 来源与使用权记录见 [音乐 CREDITS](block_war/music/CREDITS.md)，不适用 CC0 音效声明。
+共享菜单音效位于 `ui/`；许可、原始来源与修改记录见 [CREDITS](CREDITS.md) 和 [菜单清单](ui/audio_manifest.json)。
 
 运行接口：`soundbank.json` 给出 kind → 文件名列表，所有文件位于本目录。`audio_manifest.json` 给出每个文件的时长、活动 RMS、整段 RMS、采样峰值、4 倍过采样真峰值、来源、处理记录与 SHA-256。
 

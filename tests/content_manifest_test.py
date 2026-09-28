@@ -28,10 +28,6 @@ class ContentManifestTest(unittest.TestCase):
             self.assertEqual(original, MANIFEST.manifest_bytes(root), 'Offline hero must not fork the relay rules contract')
             local_hero.write_text('hp = 201\n', encoding='utf-8')
             self.assertEqual(original, MANIFEST.manifest_bytes(root), 'Local trial balance remains outside network games')
-            local_map = root / 'data/block_war/maps/islands.tres'
-            local_map.parent.mkdir(parents=True)
-            local_map.write_text('team_size = 3\n', encoding='utf-8')
-            self.assertEqual(original, MANIFEST.manifest_bytes(root), 'Local block-war maps remain outside the network contract')
             layout.write_bytes(b'{"width": 100}\r\n')
             self.assertEqual(original, MANIFEST.manifest_bytes(root), 'Windows line endings alone must not fork compatibility')
             layout.write_bytes(b'{"width": 120}\n')

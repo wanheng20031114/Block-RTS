@@ -3,9 +3,6 @@ extends Node
 signal load_failed(message: String)
 var config: Dictionary = {}
 var online: bool = false
-var block_war_map_id := "rift"
-var block_war_commander: StringName = &"squirrel"
-var block_war_opponent_commander: StringName = &"squirrel"
 @onready var relay: RelayClient = $RelayClient
 @onready var settings: GameSettings = $Settings
 @onready var rogue: RogueSession = $Rogue
@@ -94,7 +91,7 @@ func _load_match_scene() -> Error:
 			relay.leave_room()
 		online = false
 		config.clear()
-		load_failed.emit("无法载入积木争霸战场，请检查游戏文件后重试")
+		load_failed.emit("无法载入 Block-RTS 战场，请检查游戏文件后重试")
 	return error
 
 func back_to_lobby() -> void:

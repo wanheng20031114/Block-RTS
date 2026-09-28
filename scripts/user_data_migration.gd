@@ -1,12 +1,12 @@
 class_name UserDataMigration
 extends RefCounted
-## Copy only preferences when a project rename creates its new user:// folder.
-## Existing new-version preferences always win; logs and sessions are not copied.
-const PREVIOUS_PROJECT_DIRECTORY := "灰烬王国 · 中世纪乱斗"
-const PREFERENCE_FILES: PackedStringArray = ["settings.cfg", "lobby_preferences.cfg"]
+## Import the former combined game's preferences and roguelike checkpoint once.
+## Existing Block-RTS files win; source data, logs and network sessions are untouched.
+const PREVIOUS_PROJECT_DIRECTORY := "积木争霸"
+const DATA_FILES: PackedStringArray = ["settings.cfg", "lobby_preferences.cfg", "rogue_run.json"]
 
 static func migrate(previous_directory: String, current_directory: String) -> Error:
-	for filename: String in PREFERENCE_FILES:
+	for filename: String in DATA_FILES:
 		var source := previous_directory.path_join(filename)
 		var destination := current_directory.path_join(filename)
 		if FileAccess.file_exists(destination) or not FileAccess.file_exists(source):

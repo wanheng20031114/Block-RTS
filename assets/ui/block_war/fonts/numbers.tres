@@ -1,8 +1,0 @@
-[gd_resource type="FontVariation" load_steps=2 format=3]
-
-[ext_resource type="FontFile" path="res://assets/ui/block_war/fonts/Inter-Variable.ttf" id="inter"]
-
-[resource]
-base_font = ExtResource("inter")
-variation_opentype = {2003265652: 600.0, 1869640570: 14.0}
-opentype_features = {1953396077: 1}

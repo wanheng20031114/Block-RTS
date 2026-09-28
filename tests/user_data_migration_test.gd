@@ -1,5 +1,5 @@
 extends SceneTree
-## Verify a renamed game preserves preferences without copying unrelated data.
+## Verify the split game preserves preferences and roguelike progress independently.
 var failures: Array[String] = []
 var checks: int = 0
 
@@ -24,14 +24,18 @@ func _run() -> void:
 	assert(DirAccess.make_dir_recursive_absolute(current) == OK)
 	_write(previous.path_join("settings.cfg"), "[keys]\n全军=\"F2\"\n")
 	_write(previous.path_join("lobby_preferences.cfg"), "[lobby]\nname=\"指挥官\"\n")
+	_write(previous.path_join("rogue_run.json"), "{\"node\": 3, \"army\": [\"骑士\"]}\n")
 	_write(previous.path_join("session.cfg"), "unrelated session data")
 	check(UserDataMigration.migrate(previous, current) == OK, "initial migration succeeds")
-	for filename: String in UserDataMigration.PREFERENCE_FILES:
+	for filename: String in UserDataMigration.DATA_FILES:
 		check(FileAccess.get_file_as_string(current.path_join(filename)) == FileAccess.get_file_as_string(previous.path_join(filename)), "UTF-8 preferences preserved: " + filename)
 	check(not FileAccess.file_exists(current.path_join("session.cfg")), "unrelated session data is not copied")
 	_write(current.path_join("settings.cfg"), "new-version settings")
+	_write(current.path_join("rogue_run.json"), "new RTS checkpoint")
 	check(UserDataMigration.migrate(previous, current) == OK, "repeat startup succeeds")
 	check(FileAccess.get_file_as_string(current.path_join("settings.cfg")) == "new-version settings", "new-version settings win")
+	check(FileAccess.get_file_as_string(current.path_join("rogue_run.json")) == "new RTS checkpoint", "new RTS checkpoint wins")
+	check(FileAccess.get_file_as_string(previous.path_join("rogue_run.json")).contains("骑士"), "original checkpoint remains unchanged")
 	check(FileAccess.get_file_as_string(previous.path_join("settings.cfg")).contains("全军"), "legacy preferences remain unchanged")
 	check(UserDataMigration.migrate(directory.path_join("missing"), current) == OK, "fresh install succeeds without legacy directory")
 	# These are the exact flat directories and files created by this test.
