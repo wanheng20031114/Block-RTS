@@ -14,23 +14,14 @@ void fragment() {
     vec3 snow = mix(vec3(.49,.62,.70), vec3(.77,.84,.88), broad * .75 + .10);
     snow += (detail-.5) * .022 + (drift-.5) * .012;
     // Three broad approach routes converge naturally at the western base.
-    float spread = smoothstep(-62.0, -28.0, p.x);
-    float flank = (18.0 + sin(p.x*.055)*2.4)*spread;
+    float spread = smoothstep(-108.0, -67.0, p.x);
+    float flank = (40.0 + sin(p.x*.04)*2.4)*spread;
     float distance_to_road = min(abs(p.y), min(abs(p.y-flank), abs(p.y+flank)));
     float wear = 1.0-smoothstep(2.3, 5.2, distance_to_road+(detail-.5)*2.0);
-    wear *= smoothstep(-72.0, -58.0, p.x);
+    wear *= smoothstep(-119.0, -103.0, p.x);
     vec3 packed_snow = mix(vec3(.29,.43,.53), vec3(.48,.59,.66), detail);
     vec3 surface = mix(snow, packed_snow, wear*.59);
-    // Flat frozen ponds remain traversable; the pale cracked edges read as ice.
-    vec2 ice_a = (p-vec2(-5.0,29.0))/vec2(8.2,3.8);
-    vec2 ice_b = (p-vec2(30.0,-30.0))/vec2(5.6,3.0);
-    float pond = min(length(ice_a), length(ice_b)) + (wind(p*.56)-.5)*.12;
-    float ice = 1.0-smoothstep(.85, 1.05, pond);
-    float rim = (1.0-smoothstep(.92,1.11,pond))*smoothstep(.80,.94,pond);
-    float crack = pow(1.0-abs(sin(p.x*.53+p.y*1.9+wind(p*.3)*1.8)), 31.0)*.09;
-    vec3 frozen = mix(vec3(.31,.58,.70), vec3(.64,.79,.86), detail*.65) + crack;
-    surface = mix(surface, frozen, ice*.87);
-    ALBEDO = mix(surface, vec3(.9,.96,.98), rim*.6);
-    ROUGHNESS = mix(.94,.36,ice);
-    SPECULAR = mix(.15,.5,ice);
+    ALBEDO = surface;
+    ROUGHNESS = .94;
+    SPECULAR = .15;
 }

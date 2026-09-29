@@ -53,11 +53,23 @@ func _sync_navigation() -> void:
 	check(false, "snowfield native navigation rebuild completes")
 
 func _path_reaches_headquarters(from: Vector3) -> bool:
-	# Finish outside the headquarters footprint, since the actual building is
-	# correctly carved out of the traversable native navigation mesh.
-	var destination: Vector3 = game.defended_headquarters.position + Vector3(9, 0, 0)
-	var path: PackedVector3Array = NavigationServer3D.map_get_path(game.get_world_3d().navigation_map, from, destination, true)
-	return path.size() >= 2 and path[-1].distance_to(destination) < 0.3
+	# The economy test constructs buildings near HQ. Select an actual reachable
+	# contact approach instead of expecting an arbitrary east-side tile to remain
+	# empty after the academy is built and carved into native navigation.
+	var unit: BattleUnit = game.get_node("Units").get_child(0)
+	var query := NavigationPathQueryParameters3D.new()
+	var result := NavigationPathQueryResult3D.new()
+	query.map = unit.navigation_agent.get_navigation_map()
+	query.start_position = from
+	query.target_position = NavigationServer3D.map_get_closest_point(query.map, game.defended_headquarters.get_attack_position(from))
+	query.navigation_layers = unit.navigation_agent.navigation_layers
+	query.path_search_max_polygons = unit.navigation_agent.path_search_max_polygons
+	query.metadata_flags = unit.navigation_agent.path_metadata_flags
+	NavigationServer3D.query_path(query, result)
+	var attacker: UnitDefinition = BalanceCatalog.unit("war_elephant")
+	var contact: Vector3 = game.defended_headquarters.get_attack_position(query.target_position)
+	var in_attack_reach: bool = query.target_position.distance_to(contact) <= attacker.range + attacker.radius
+	return in_attack_reach and result.path.size() >= 2 and result.path[-1].distance_to(query.target_position) < 0.3
 
 func _enemy_production_routes() -> void:
 	await _sync_navigation()
@@ -234,7 +246,7 @@ func _run() -> void:
 	await _load_battle()
 	_freeze_simulation()
 	var original: BattleBuilding = game.defended_headquarters
-	var replacement_at := Vector3(-45, 0, 18)
+	var replacement_at: Vector3 = original.position + Vector3(20, 0, 18)
 	check(game.placement_error(replacement_at, 0, "headquarters") == "每位玩家只能拥有一座大本营（含工地）", "normal defense placement preserves the one-headquarters-per-player rule")
 	# Deliberately bypass paid placement only to simulate a stale/replaced generic
 	# HQ reference; normal gameplay must continue rejecting a second headquarters.

@@ -1,0 +1,13 @@
+[gd_resource type="CylinderMesh" load_steps=2 format=3]
+
+[sub_resource type="StandardMaterial3D" id="Material"]
+albedo_color = Color(0.77, 0.86, 0.9, 1)
+roughness = 0.95
+
+[resource]
+material = SubResource("Material")
+top_radius = 0
+bottom_radius = 1.1178
+height = 1.9620000000000002
+radial_segments = 7
+rings = 1

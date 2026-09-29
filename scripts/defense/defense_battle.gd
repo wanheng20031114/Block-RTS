@@ -56,13 +56,12 @@ func _setup_match() -> void:
 	var mine := nearest_mine(defended_headquarters.position)
 	defended_headquarters.production.rally_mine = mine
 	defended_headquarters.rally_point = mine.position
-	for index: int in 6:
-		var worker: BattleUnit = spawn_unit("farmer", 0, Vector3(-68 + (index % 3) * 2, 0, -9 - (index / 3) * 2))
-		worker.issue_gather(mine)
-	for index: int in 6:
-		spawn_unit("swordsman" if index < 4 else "archer", 0, Vector3(-46 + (index % 2) * 2, 0, -4 + (index / 2) * 2))
+	for marker: Marker3D in map_instance.get_node("StartingUnits").get_children():
+		var unit: BattleUnit = spawn_unit(marker.get_meta("kind"), 0, marker.global_position)
+		if unit.unit_type == "farmer":
+			unit.issue_gather(mine)
 	preparation_remaining = scenario.preparation_seconds
-	camera_rig.focus_at(Vector3(-56, 0, 0), true)
+	camera_rig.focus_at(defended_headquarters.position + Vector3(8, 0, 0), true)
 
 func building_definition_for(kind: String, owner: int) -> BuildingDefinition:
 	if owner == 0:

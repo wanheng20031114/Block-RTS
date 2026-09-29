@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://scripts/defense/defense_battle.gd" id="battle"]
 [ext_resource type="AudioStream" path="res://assets/audio/defense_wave_bell.wav" id="bell"]
 [ext_resource type="Resource" path="res://data/defense/ten_waves.tres" id="scenario"]
-[ext_resource type="Shader" path="res://assets/shaders/minimap_visibility.gdshader" id="minimap_shader"]
+[ext_resource type="Shader" path="res://assets/defense/snowfield_minimap.gdshader" id="minimap_shader"]
 
 [sub_resource type="ShaderMaterial" id="snow_minimap"]
 shader = ExtResource("minimap_shader")
@@ -56,17 +56,17 @@ environment = SubResource("winter")
 rotation_degrees = Vector3(-48, -28, 0)
 light_color = Color(1, 0.95, 0.86, 1)
 light_energy = 0.95
-directional_shadow_max_distance = 190.0
+directional_shadow_max_distance = 280.0
 
 [node name="CameraRig" parent="." index="2"]
-position = Vector3(-56, 0, 0)
-maximum_zoom = 90.0
+position = Vector3(-98, 0, 0)
+maximum_zoom = 135.0
 
 [node name="Camera3D" parent="CameraRig" index="0"]
-position = Vector3(0, 42, 35.24)
+position = Vector3(0, 72, 60.414)
 rotation_degrees = Vector3(-50, 0, 0)
 size = 40.0
-far = 260.0
+far = 440.0
 
 [node name="AudioListener3D" parent="CameraRig" index="1"]
 rotation_degrees = Vector3(0, 0, 0)

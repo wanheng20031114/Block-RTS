@@ -41,9 +41,11 @@ func _run() -> void:
 	for mine: ResourceVein in get_nodes_in_group("resource_veins"):
 		mine.show()
 	for view: Dictionary in [
-		{"name": "snowfield_overview", "center": Vector3.ZERO, "zoom": 107.0},
-		{"name": "player_base", "center": Vector3(-54, 0, -1), "zoom": 42.0},
-		{"name": "enemy_fortifications", "center": Vector3(56, 0, -3), "zoom": 59.0}
+		{"name": "snowfield_overview", "center": Vector3.ZERO, "zoom": 180.0},
+		{"name": "player_base", "center": game.defended_headquarters.position + Vector3(10, 0, -1), "zoom": 61.0},
+		{"name": "enemy_fortifications", "center": Vector3(100, 0, -3), "zoom": 75.0},
+		{"name": "frozen_river", "center": Vector3(8, 0, 0), "zoom": 89.0},
+		{"name": "north_ice_crossing", "center": Vector3(-3, 0, -40), "zoom": 46.0}
 	]:
 		game.camera_rig.focus_at(view.center, true)
 		game.camera_rig.zoom_target = view.zoom

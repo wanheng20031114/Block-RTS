@@ -7,6 +7,6 @@
 script = ExtResource("script")
 id = &"snowfield"
 display_name = "霜原守望"
-size = Vector2(160, 96)
+size = Vector2(256, 144)
 slots = 2
 scene = ExtResource("scene")

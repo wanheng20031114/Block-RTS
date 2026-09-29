@@ -1,12 +1,12 @@
 [gd_scene load_steps=14 format=3]
 
 [sub_resource type="StandardMaterial3D" id="Snow"]
-albedo_color = Color(0.83, 0.91, 0.95, 1)
+albedo_color = Color(0.77, 0.86, 0.90, 1)
 roughness = 0.95
 
 [sub_resource type="StandardMaterial3D" id="Needles"]
-albedo_color = Color(0.09, 0.23, 0.24, 1)
-roughness = 0.93
+albedo_color = Color(0.075, 0.22, 0.23, 1)
+roughness = 0.95
 
 [sub_resource type="StandardMaterial3D" id="Bark"]
 albedo_color = Color(0.26, 0.24, 0.22, 1)
@@ -36,8 +36,8 @@ rings = 1
 [sub_resource type="CylinderMesh" id="Snow0"]
 material = SubResource("Snow")
 top_radius = 0.0
-bottom_radius = 1.6625
-height = 2.2500
+bottom_radius = 1.4175
+height = 2.0250
 radial_segments = 7
 rings = 1
 
@@ -52,8 +52,8 @@ rings = 1
 [sub_resource type="CylinderMesh" id="Snow1"]
 material = SubResource("Snow")
 top_radius = 0.0
-bottom_radius = 1.3110
-height = 2.1800
+bottom_radius = 1.1178
+height = 1.9620
 radial_segments = 7
 rings = 1
 
@@ -68,8 +68,8 @@ rings = 1
 [sub_resource type="CylinderMesh" id="Snow2"]
 material = SubResource("Snow")
 top_radius = 0.0
-bottom_radius = 0.9310
-height = 1.9500
+bottom_radius = 0.7938
+height = 1.7550
 radial_segments = 7
 rings = 1
 
@@ -84,8 +84,8 @@ rings = 1
 [sub_resource type="CylinderMesh" id="Snow3"]
 material = SubResource("Snow")
 top_radius = 0.0
-bottom_radius = 0.5510
-height = 1.7000
+bottom_radius = 0.4698
+height = 1.5300
 radial_segments = 7
 rings = 1
 
@@ -107,7 +107,7 @@ rotation = Vector3(0, 0.0000, 0)
 mesh = SubResource("Needles0")
 
 [node name="Snow0" type="MeshInstance3D" parent="."]
-position = Vector3(0.025, 2.2900, 0)
+position = Vector3(0.025, 2.3600, 0)
 rotation = Vector3(0, 0.0000, 0)
 mesh = SubResource("Snow0")
 
@@ -117,7 +117,7 @@ rotation = Vector3(0, 0.4300, 0)
 mesh = SubResource("Needles1")
 
 [node name="Snow1" type="MeshInstance3D" parent="."]
-position = Vector3(0.025, 3.4400, 0)
+position = Vector3(0.025, 3.5100, 0)
 rotation = Vector3(0, 0.4300, 0)
 mesh = SubResource("Snow1")
 
@@ -127,7 +127,7 @@ rotation = Vector3(0, 0.8600, 0)
 mesh = SubResource("Needles2")
 
 [node name="Snow2" type="MeshInstance3D" parent="."]
-position = Vector3(0.025, 4.5200, 0)
+position = Vector3(0.025, 4.5900, 0)
 rotation = Vector3(0, 0.8600, 0)
 mesh = SubResource("Snow2")
 
@@ -137,6 +137,6 @@ rotation = Vector3(0, 1.2900, 0)
 mesh = SubResource("Needles3")
 
 [node name="Snow3" type="MeshInstance3D" parent="."]
-position = Vector3(0.025, 5.4900, 0)
+position = Vector3(0.025, 5.5600, 0)
 rotation = Vector3(0, 1.2900, 0)
 mesh = SubResource("Snow3")
