@@ -91,7 +91,7 @@ script = ExtResource("script")
 
 [node name="MenuEntrance" type="Node" parent="."]
 script = ExtResource("menu_entrance")
-sections = Array[NodePath]([NodePath("CanvasLayer/UI/Brand"), NodePath("CanvasLayer/UI/MainMenu/SoloMenu"), NodePath("CanvasLayer/UI/MainMenu/Multiplayer"), NodePath("CanvasLayer/UI/MainMenu/RogueMode"), NodePath("CanvasLayer/UI/MainMenu/MobaMode"), NodePath("CanvasLayer/UI/MainMenu/Codex"), NodePath("CanvasLayer/UI/MainMenu/Sandbox"), NodePath("CanvasLayer/UI/MainMenu/UtilityActions"), NodePath("CanvasLayer/UI/Version")])
+sections = Array[NodePath]([NodePath("CanvasLayer/UI/Brand"), NodePath("CanvasLayer/UI/MainMenu/SoloMenu"), NodePath("CanvasLayer/UI/MainMenu/Multiplayer"), NodePath("CanvasLayer/UI/MainMenu/DefenseMode"), NodePath("CanvasLayer/UI/MainMenu/RogueMode"), NodePath("CanvasLayer/UI/MainMenu/MobaMode"), NodePath("CanvasLayer/UI/MainMenu/Codex"), NodePath("CanvasLayer/UI/MainMenu/Sandbox"), NodePath("CanvasLayer/UI/MainMenu/UtilityActions"), NodePath("CanvasLayer/UI/Version")])
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1939480643]
 environment = SubResource("World")
@@ -227,6 +227,16 @@ custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 theme_override_font_sizes/font_size = 25
 text = "多人对战"
+alignment = 1
+theme_override_fonts/font = ExtResource("med_title")
+
+[node name="DefenseMode" type="Button" parent="CanvasLayer/UI/MainMenu"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+theme_override_font_sizes/font_size = 23
+text = "雪原防卫 · 守住十波敌袭"
+tooltip_text = "开阔雪原 · 采矿、筑城、招募军队，保护西侧大本营"
 alignment = 1
 theme_override_fonts/font = ExtResource("med_title")
 
@@ -1243,6 +1253,7 @@ one_shot = true
 
 [connection signal="pressed" from="CanvasLayer/UI/MainMenu/SoloMenu" to="." method="_on_open_solo"]
 [connection signal="pressed" from="CanvasLayer/UI/MainMenu/Multiplayer" to="." method="_on_open_multiplayer"]
+[connection signal="pressed" from="CanvasLayer/UI/MainMenu/DefenseMode" to="." method="_on_open_defense"]
 [connection signal="pressed" from="CanvasLayer/UI/MainMenu/Codex" to="." method="_on_open_codex"]
 [connection signal="pressed" from="CanvasLayer/UI/MainMenu/Sandbox" to="." method="_on_open_sandbox"]
 [connection signal="pressed" from="CanvasLayer/UI/MainMenu/RogueMode" to="." method="_on_open_rogue"]

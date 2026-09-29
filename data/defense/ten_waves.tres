@@ -1,0 +1,68 @@
+[gd_resource type="Resource" script_class="DefenseScenarioDefinition" load_steps=13 format=3]
+
+[ext_resource type="Script" path="res://scripts/defense/defense_scenario_definition.gd" id="scenario"]
+[ext_resource type="Script" path="res://scripts/defense/defense_wave_definition.gd" id="wave"]
+
+[sub_resource type="Resource" id="wave1"]
+script = ExtResource("wave")
+title = "雪原斥候"
+units = Dictionary[String, int]({"swordsman": 6, "archer": 2})
+clear_reward = 100
+
+[sub_resource type="Resource" id="wave2"]
+script = ExtResource("wave")
+title = "盾矛前锋"
+units = Dictionary[String, int]({"swordsman": 5, "spearman": 4, "archer": 3})
+clear_reward = 120
+
+[sub_resource type="Resource" id="wave3"]
+script = ExtResource("wave")
+title = "疾驰骑队"
+units = Dictionary[String, int]({"swordsman": 6, "light_cavalry": 4, "archer": 6})
+clear_reward = 140
+
+[sub_resource type="Resource" id="wave4"]
+script = ExtResource("wave")
+title = "重盾压境"
+units = Dictionary[String, int]({"shield_guard": 6, "spearman": 6, "crossbowman": 6, "knight": 2})
+clear_reward = 160
+
+[sub_resource type="Resource" id="wave5"]
+script = ExtResource("wave")
+title = "第一轮攻城"
+units = Dictionary[String, int]({"swordsman": 8, "shield_guard": 5, "archer": 6, "knight": 3, "catapult": 2})
+clear_reward = 180
+
+[sub_resource type="Resource" id="wave6"]
+script = ExtResource("wave")
+title = "火枪纵队"
+units = Dictionary[String, int]({"shield_guard": 8, "spearman": 6, "musketeer": 8, "light_cavalry": 4, "cannon": 2})
+clear_reward = 200
+
+[sub_resource type="Resource" id="wave7"]
+script = ExtResource("wave")
+title = "钢铁洪流"
+units = Dictionary[String, int]({"swordsman": 8, "shield_guard": 8, "crossbowman": 8, "knight": 6, "catapult": 3})
+clear_reward = 220
+
+[sub_resource type="Resource" id="wave8"]
+script = ExtResource("wave")
+title = "重炮轰击"
+units = Dictionary[String, int]({"shield_guard": 10, "spearman": 8, "musketeer": 10, "knight": 6, "cannon": 3, "heavy_cannon": 1})
+clear_reward = 240
+
+[sub_resource type="Resource" id="wave9"]
+script = ExtResource("wave")
+title = "破阵战象"
+units = Dictionary[String, int]({"shield_guard": 12, "crossbowman": 10, "musketeer": 8, "knight": 8, "war_elephant": 2, "catapult": 2, "heavy_cannon": 2})
+clear_reward = 260
+
+[sub_resource type="Resource" id="wave10"]
+script = ExtResource("wave")
+title = "终局围攻"
+units = Dictionary[String, int]({"shield_guard": 14, "spearman": 8, "musketeer": 12, "knight": 10, "war_elephant": 3, "catapult": 3, "heavy_cannon": 2, "triple_cannon": 2})
+clear_reward = 300
+
+[resource]
+script = ExtResource("scenario")
+waves = Array[ExtResource("wave")]([SubResource("wave1"), SubResource("wave2"), SubResource("wave3"), SubResource("wave4"), SubResource("wave5"), SubResource("wave6"), SubResource("wave7"), SubResource("wave8"), SubResource("wave9"), SubResource("wave10")])

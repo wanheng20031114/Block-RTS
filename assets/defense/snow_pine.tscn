@@ -1,0 +1,142 @@
+[gd_scene load_steps=14 format=3]
+
+[sub_resource type="StandardMaterial3D" id="Snow"]
+albedo_color = Color(0.83, 0.91, 0.95, 1)
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="Needles"]
+albedo_color = Color(0.09, 0.23, 0.24, 1)
+roughness = 0.93
+
+[sub_resource type="StandardMaterial3D" id="Bark"]
+albedo_color = Color(0.26, 0.24, 0.22, 1)
+roughness = 1.0
+
+[sub_resource type="CylinderMesh" id="Trunk"]
+material = SubResource("Bark")
+top_radius = 0.14
+bottom_radius = 0.23
+height = 3.0
+radial_segments = 6
+rings = 1
+
+[sub_resource type="CylinderShape3D" id="TrunkShape"]
+radius = 0.23
+height = 3.6
+margin = 0.01
+
+[sub_resource type="CylinderMesh" id="Needles0"]
+material = SubResource("Needles")
+top_radius = 0.0
+bottom_radius = 1.7500
+height = 2.2500
+radial_segments = 7
+rings = 1
+
+[sub_resource type="CylinderMesh" id="Snow0"]
+material = SubResource("Snow")
+top_radius = 0.0
+bottom_radius = 1.6625
+height = 2.2500
+radial_segments = 7
+rings = 1
+
+[sub_resource type="CylinderMesh" id="Needles1"]
+material = SubResource("Needles")
+top_radius = 0.0
+bottom_radius = 1.3800
+height = 2.1800
+radial_segments = 7
+rings = 1
+
+[sub_resource type="CylinderMesh" id="Snow1"]
+material = SubResource("Snow")
+top_radius = 0.0
+bottom_radius = 1.3110
+height = 2.1800
+radial_segments = 7
+rings = 1
+
+[sub_resource type="CylinderMesh" id="Needles2"]
+material = SubResource("Needles")
+top_radius = 0.0
+bottom_radius = 0.9800
+height = 1.9500
+radial_segments = 7
+rings = 1
+
+[sub_resource type="CylinderMesh" id="Snow2"]
+material = SubResource("Snow")
+top_radius = 0.0
+bottom_radius = 0.9310
+height = 1.9500
+radial_segments = 7
+rings = 1
+
+[sub_resource type="CylinderMesh" id="Needles3"]
+material = SubResource("Needles")
+top_radius = 0.0
+bottom_radius = 0.5800
+height = 1.7000
+radial_segments = 7
+rings = 1
+
+[sub_resource type="CylinderMesh" id="Snow3"]
+material = SubResource("Snow")
+top_radius = 0.0
+bottom_radius = 0.5510
+height = 1.7000
+radial_segments = 7
+rings = 1
+
+[node name="SnowPine" type="StaticBody3D"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Trunk" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.5, 0)
+mesh = SubResource("Trunk")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+position = Vector3(0, 1.8, 0)
+shape = SubResource("TrunkShape")
+
+[node name="Needles0" type="MeshInstance3D" parent="."]
+position = Vector3(0, 2.1500, 0)
+rotation = Vector3(0, 0.0000, 0)
+mesh = SubResource("Needles0")
+
+[node name="Snow0" type="MeshInstance3D" parent="."]
+position = Vector3(0.025, 2.2900, 0)
+rotation = Vector3(0, 0.0000, 0)
+mesh = SubResource("Snow0")
+
+[node name="Needles1" type="MeshInstance3D" parent="."]
+position = Vector3(0, 3.3000, 0)
+rotation = Vector3(0, 0.4300, 0)
+mesh = SubResource("Needles1")
+
+[node name="Snow1" type="MeshInstance3D" parent="."]
+position = Vector3(0.025, 3.4400, 0)
+rotation = Vector3(0, 0.4300, 0)
+mesh = SubResource("Snow1")
+
+[node name="Needles2" type="MeshInstance3D" parent="."]
+position = Vector3(0, 4.3800, 0)
+rotation = Vector3(0, 0.8600, 0)
+mesh = SubResource("Needles2")
+
+[node name="Snow2" type="MeshInstance3D" parent="."]
+position = Vector3(0.025, 4.5200, 0)
+rotation = Vector3(0, 0.8600, 0)
+mesh = SubResource("Snow2")
+
+[node name="Needles3" type="MeshInstance3D" parent="."]
+position = Vector3(0, 5.3500, 0)
+rotation = Vector3(0, 1.2900, 0)
+mesh = SubResource("Needles3")
+
+[node name="Snow3" type="MeshInstance3D" parent="."]
+position = Vector3(0.025, 5.4900, 0)
+rotation = Vector3(0, 1.2900, 0)
+mesh = SubResource("Snow3")

@@ -194,11 +194,11 @@ func refresh() -> void:
 	if _preview_alliance != preview_relation:
 		_preview_alliance = preview_relation
 		$ModelPreviews.set_team(_preview_alliance)
-	$TopLeft/Location.text = game.map_definition.display_name + "  ·  " + NetworkProtocol.MODES[game.match_config.mode].label
+	$TopLeft/Location.text = game.map_definition.display_name + "  ·  " + game.mode_display_name()
 	$MapFrame/MapTitle.text = game.map_definition.display_name
 	timer_label.text = "%02d:%02d" % [int(game.elapsed) / 60, int(game.elapsed) % 60]
-	objective_label.text = "摧毁敌队全部军事建筑"
-	%EnemyCount.text = "已发现敌军 %d    击败 %d" % [game.enemy_count(), game.kills]
+	objective_label.text = game.objective_text()
+	%EnemyCount.text = game.enemy_status_text()
 	$CommandBar/Composition.refresh()
 	var focused: Node3D = $CommandBar/Composition.focused_entity()
 	if focused is BattleBuilding and focused.owner_id == game.local_owner_id:
@@ -601,4 +601,4 @@ func show_result(victory: bool, duration: float, defeated: int) -> void:
 	UIMotion.reveal($ResultOverlay/Paper, Vector2(0, 18))
 	%ResultHeading.text = "战场属于你" if victory else "你的队伍已战败"
 	%ResultEyebrow.text = "战报 · 凯旋" if victory else "战报 · 失利"
-	%ResultBody.text = ("敌队全部军事建筑已被摧毁。" if victory else "整顿军队，重新部署你的进攻。") + "\n\n用时 %02d:%02d      击败敌军 %d" % [int(duration) / 60, int(duration) % 60, defeated]
+	%ResultBody.text = game.result_description(victory) + "\n\n用时 %02d:%02d      击败敌军 %d" % [int(duration) / 60, int(duration) % 60, defeated]

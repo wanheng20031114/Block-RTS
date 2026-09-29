@@ -38,6 +38,9 @@ func _ready() -> void:
 	if "--rogue" in arguments:
 		call_deferred("_on_open_rogue")
 		return
+	if "--defense" in arguments:
+		call_deferred("_on_open_defense")
+		return
 	if "--lobby-capture" not in arguments:
 		for flag: String in ["--capture", "--smoke-test", "--ui-smoke", "--2v2", "--3v3", "--4v4", "--2v2v2", "--ffa"]:
 			if flag in arguments:
@@ -168,6 +171,13 @@ func _on_open_moba() -> void:
 	if _transitioning: return
 	_transitioning = true
 	if session.start_moba_test1() != OK: _transitioning = false
+
+func _on_open_defense() -> void:
+	if _transitioning:
+		return
+	_transitioning = true
+	if session.start_defense() != OK:
+		_transitioning = false
 
 func _on_open_rogue() -> void:
 	if _transitioning:

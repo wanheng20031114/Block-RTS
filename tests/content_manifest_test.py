@@ -28,6 +28,10 @@ class ContentManifestTest(unittest.TestCase):
             self.assertEqual(original, MANIFEST.manifest_bytes(root), 'Offline hero must not fork the relay rules contract')
             local_hero.write_text('hp = 201\n', encoding='utf-8')
             self.assertEqual(original, MANIFEST.manifest_bytes(root), 'Local trial balance remains outside network games')
+            local_defense = root / 'data/defense/ten_waves.tres'
+            local_defense.parent.mkdir(parents=True)
+            local_defense.write_text('preparation_seconds = 120\n', encoding='utf-8')
+            self.assertEqual(original, MANIFEST.manifest_bytes(root), 'Offline defense waves must not fork the relay rules contract')
             layout.write_bytes(b'{"width": 100}\r\n')
             self.assertEqual(original, MANIFEST.manifest_bytes(root), 'Windows line endings alone must not fork compatibility')
             layout.write_bytes(b'{"width": 120}\n')

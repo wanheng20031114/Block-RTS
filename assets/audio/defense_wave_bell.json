@@ -1,0 +1,14 @@
+{
+  "file": "defense_wave_bell.wav",
+  "description": "Original large cast-bell warning: two low strikes with inharmonic metal resonance and restrained outdoor echoes.",
+  "source": "Original deterministic synthesis in tools/build_defense_audio.py; no third-party recordings or samples.",
+  "sample_rate": 48000,
+  "channels": 1,
+  "format": "PCM16 WAV",
+  "duration_s": 6.4,
+  "peak_dbfs": -7.0,
+  "rms_dbfs": -22.68,
+  "sha256": "e68baf9fca8810021ab4f60012a46bc611d0c64b6aec074983033d722ade908e",
+  "runtime": "Non-looping AudioStreamPlayer on Combat bus, process_mode = 1 (pausable), volume_db = 0.0; play once on wave start.",
+  "verification": "PCM parameters, deterministic output and non-clipping peak checked by builder; perceptual in-game mix requires listening."
+}

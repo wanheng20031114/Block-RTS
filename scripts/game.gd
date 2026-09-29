@@ -822,6 +822,18 @@ func debug_add_gold() -> void:
 	hud.toast("调试补给 +100 金币", 2.0)
 	hud.refresh()
 
+func mode_display_name() -> String:
+	return NetworkProtocol.MODES[match_config.mode].label
+
+func objective_text() -> String:
+	return "摧毁敌队全部军事建筑"
+
+func enemy_status_text() -> String:
+	return "已发现敌军 %d    击败 %d" % [enemy_count(), kills]
+
+func result_description(victory: bool) -> String:
+	return "敌队全部军事建筑已被摧毁。" if victory else "整顿军队，重新部署你的进攻。"
+
 func _on_enemy_wave() -> void:
 	pass
 
