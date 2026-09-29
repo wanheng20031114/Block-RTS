@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="BuildingDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/building_definition.gd" id="definition"]
+
+[resource]
+script = ExtResource("definition")
+id = &"residence"
+name = "住宅"
+combat_class = &"building"
+hp = 650.0
+melee_armor = 5.0
+ranged_armor = 5.0
+damage = 0.0
+range = 0.0
+cost = 0
+radius = 3.0
+size = Vector3(6, 6.5, 5.5)
+bar_height = 7.0
+model = "residence_cottage"
+produces = PackedStringArray()

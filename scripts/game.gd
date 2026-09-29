@@ -1112,12 +1112,12 @@ func create_site(owner: int, kind: String, at: Vector3, workers: Array, queued: 
 		hud.toast("%s · 下一座 %d 金币 · Shift 连续建造" % [site.display_name, player.get_building_cost(kind)], 6.0)
 	return {"ok": true, "entity_id": site.entity_id}
 
-func spawn_building(kind: String, owner: int, at: Vector3, construction: bool = false, id: int = 0) -> BattleBuilding:
+func spawn_building(kind: String, owner: int, at: Vector3, construction: bool = false, id: int = 0, authored_definition: BuildingDefinition = null) -> BattleBuilding:
 	if _match_ready and is_authority:
 		$StaticMotionGrid.invalidate()
 	var site: BattleBuilding = BUILDING_SCENE.instantiate()
 	site.building_type = kind
-	site.definition_override = building_definition_for(kind, owner)
+	site.definition_override = authored_definition if authored_definition != null else building_definition_for(kind, owner)
 	site.entity_id = id
 	site.owner_id = owner
 	site.team = get_player(owner).alliance_id

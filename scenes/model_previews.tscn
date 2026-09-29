@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3]
+[gd_scene load_steps=31 format=3]
 
 [ext_resource type="Script" path="res://scripts/model_previews.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://assets/models/units/swordsman.tscn" id="2_model"]
@@ -29,6 +29,7 @@
 [ext_resource type="PackedScene" path="res://assets/models/environment/cannon_tower.tscn" id="cannon_tower_model"]
 [ext_resource type="PackedScene" path="res://assets/models/environment/castle.tscn" id="castle_model"]
 [ext_resource type="PackedScene" path="res://assets/models/environment/heavy_fortress.tscn" id="heavy_fortress_model"]
+[ext_resource type="PackedScene" path="res://assets/defense/residence_townhouse.tscn" id="residence_model"]
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMaterial"]
 sky_top_color = Color(0.42, 0.50, 0.61, 1)
@@ -962,6 +963,42 @@ position = Vector3(0, 3.0, 0)
 position = Vector3(8, 7, -11)
 projection = 1
 size = 17.0
+near = 0.1
+far = 60.0
+current = true
+
+[node name="residence" type="SubViewport" parent="."]
+transparent_bg = true
+own_world_3d = true
+msaa_3d = 2
+gui_disable_input = true
+size = Vector2i(192, 216)
+render_target_update_mode = 1
+
+[node name="World" type="Node3D" parent="residence"]
+
+[node name="Model" parent="residence/World" instance=ExtResource("residence_model")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="residence/World"]
+environment = SubResource("PortraitEnvironment")
+
+[node name="KeyLight" type="DirectionalLight3D" parent="residence/World"]
+rotation_degrees = Vector3(-42, 145, 0)
+light_color = Color(1, 0.88, 0.70, 1)
+light_energy = 1.25
+
+[node name="RimLight" type="DirectionalLight3D" parent="residence/World"]
+rotation_degrees = Vector3(-22, -35, 0)
+light_color = Color(0.64, 0.76, 1, 1)
+light_energy = 0.48
+
+[node name="LookAt" type="Marker3D" parent="residence/World"]
+position = Vector3(0, 2.8, 0)
+
+[node name="Camera3D" type="Camera3D" parent="residence/World"]
+position = Vector3(8, 7, 11)
+projection = 1
+size = 8.8
 near = 0.1
 far = 60.0
 current = true

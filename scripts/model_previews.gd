@@ -1,6 +1,6 @@
 extends Node
 ## Cached isolated native render targets. Only the active portrait advances at 15 Hz.
-const KINDS: Array[String] = ["swordsman", "shield_guard", "spearman", "archer", "crossbowman", "musketeer", "knight", "war_elephant", "light_cavalry", "catapult", "cannon", "heavy_cannon", "triple_cannon", "engineer", "priest", "farmer", "headquarters", "gold_vein", "defense_tower", "cannon_tower", "castle", "heavy_fortress", "barracks", "factory", "academy"]
+const KINDS: Array[String] = ["swordsman", "shield_guard", "spearman", "archer", "crossbowman", "musketeer", "knight", "war_elephant", "light_cavalry", "catapult", "cannon", "heavy_cannon", "triple_cannon", "engineer", "priest", "farmer", "headquarters", "gold_vein", "defense_tower", "cannon_tower", "castle", "heavy_fortress", "barracks", "factory", "academy", "residence"]
 const FRAME_TIME := 1.0 / 15.0
 @export var additional_portraits: PackedStringArray = []
 

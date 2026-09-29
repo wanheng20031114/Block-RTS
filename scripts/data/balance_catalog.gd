@@ -34,6 +34,7 @@ const BUILDINGS: Dictionary = {
 	"enemy_keep": preload("res://data/buildings/enemy_keep.tres"),
 	"tower": preload("res://data/buildings/tower.tres"),
 	"house": preload("res://data/buildings/house.tres"),
+	"residence": preload("res://data/buildings/residence.tres"),
 }
 
 const UPGRADE_TRACKS: Dictionary = {&"attack": 3, &"defense": 3, &"workforce": 1, &"army_capacity": 2, &"mining": 3, &"cannon_range": 1, &"recovery": 1}

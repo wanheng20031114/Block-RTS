@@ -69,8 +69,10 @@ func _run() -> void:
 					_check(is_equal_approx(upgraded_damage, expected), label + " upgrade %d/%d" % [attack_level, defense_level])
 		for key: String in BalanceCatalog.BUILDINGS:
 			var structure: BuildingDefinition = BalanceCatalog.building(key)
-			var expected_armor: int = {"castle":12,"heavy_fortress":15}.get(key,10)
-			_check(structure.hp >= 1000 and structure.melee_armor == expected_armor and structure.ranged_armor == expected_armor, key + " approved defensive armor")
+			var expected_armor: int = {"castle":12,"heavy_fortress":15,"residence":5}.get(key,10)
+			# Decorative timber homes are softer than military fortifications.
+			var expected_health: bool = structure.hp == 650 if key == "residence" else structure.hp >= 1000
+			_check(expected_health and structure.melee_armor == expected_armor and structure.ranged_armor == expected_armor, key + " authored structural health and armor")
 			for attack_level: int in range(4):
 				var bonus: float = ATTACK_BONUS[attack_level] if attacker.military else 0
 				var damage: float = DamageResolver.resolve(DamageResolver.snapshot(attacker, bonus, 0, 0), structure)

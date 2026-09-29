@@ -48,7 +48,14 @@ func _setup_match() -> void:
 	for marker: Marker3D in map_instance.get_node("StartingBuildings").get_children():
 		spawn_building(marker.get_meta("kind"), 0, marker.global_position)
 	for marker: Marker3D in map_instance.get_node("EnemyBuildings").get_children():
-		var building := spawn_building(marker.get_meta("kind"), 1, marker.global_position)
+		var kind: String = marker.get_meta("kind")
+		var residence: BuildingDefinition
+		if kind == "residence":
+			residence = BalanceCatalog.building(kind).duplicate()
+			residence.model = marker.get_meta("model")
+		var building := spawn_building(kind, 1, marker.global_position, false, 0, residence)
+		if kind == "residence":
+			building.rotation.y = marker.rotation.y
 		building.rally_point = defended_headquarters.position
 		if building.building_type in ["barracks", "factory"]:
 			_initial_producers += 1

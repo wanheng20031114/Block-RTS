@@ -15,13 +15,17 @@
 
 ## 地图
 
-地图扩大到 **256×144 米**，面积为初版的 2.4 倍。西侧基地、八处永久金矿、东侧十三座敌方建筑分布在多层雪山环抱的谷地中；134 段外围山脊、10 处内部雪台和 483 棵雪松分隔南、中、北三条路线。丘陵具有实际高度与碰撞，军队沿低处河谷行军，基地附近保留成片建造空间。
+地图扩大到 **256×144 米**，面积为初版的 2.4 倍。西侧基地、八处永久金矿、东侧四十七座敌方建筑分布在多层雪山环抱的谷地中；134 段外围山脊、10 处内部雪台和 394 棵雪松分隔南、中、北三条路线。丘陵具有实际高度与碰撞，军队沿低处河谷行军，基地附近保留成片建造空间。
+
+敌方城镇包含原有 13 座军事建筑和新增的 **34 幢住宅**：13 幢小屋、13 幢双层住宅、8 幢长屋，围绕前门街、哨塔广场、城堡区、市场、东侧住宅区及南北工坊街布置。积雪屋顶、木梁、暖窗、烟囱、门廊和柴堆均由原生模型组成；石板街道直接写入地面材质。主街保留约 9～12 米宽的空间。
+
+住宅是敌方预置的可摧毁装饰建筑，生命 650、近远防御各 5，不攻击、不生产、不提供人口或收入，暂不进入玩家建造菜单。选中会显示「住宅」及专用模型头像。住宅受击、冒烟、倒塌和残骸沿用现有建筑系统，摧毁后物理碰撞和动态导航占地同时释放；不计算波次削弱，也不要求为了胜利拆除。三个外观共享 `residence` 类型，通过场景标记的 `model` 和朝向分别布置。
 
 蜿蜒冰河纵贯南北，带积雪岸坡、蓝色冰壳、裂纹和未封冻水面。**只有中央桥梁、北侧冰面和南侧冰面三处可以过河**；其他河段同时排除寻路和实际移动，也不能建造。三处渡口都保留宽阔通路供战象、重炮和编队通过。小地图在已探索区域显示河线和渡口。
 
 相机正对东西方向，保持玩家基地在画面左侧、敌军来自右侧，并扩大缩放范围。出生位置改由地图内的 `StartingUnits` 原生标记布置，不再在控制器中写死旧地图坐标。
 
-地形、碰撞、矿点、建筑和增援标记保存为原生 `.tscn`；原生 `GPUParticles3D` 表现飘雪，树林使用分块的原生 `MultiMeshInstance3D` 批量显示。导航源包含 19,826 个连通的一米网格，与 `ConstructionNavigation` 的动态施工占地契约一致。每个完整网格与障碍轮廓保持至少 1.15 米净空，避免大型单位沿格角行走时擦入水墙、树干或岩壁。河道水面、岸坡、物理阻挡和导航边界使用相同的曲线分段；地面沿河岸切开，避免重复铺面。几何与着色器直接适配项目的 3D 低多边形风格，没有新增栅格图像素材。
+地形、碰撞、矿点、建筑和增援标记保存为原生 `.tscn`；原生 `GPUParticles3D` 表现飘雪，树林和住宅细节使用原生 `MultiMeshInstance3D` 批量显示。导航源包含 20,844 个连通的一米网格，与 `ConstructionNavigation` 的动态施工占地契约一致；可摧毁建筑不会固化到源导航。每个完整网格与自然障碍轮廓保持至少 1.15 米净空，避免大型单位沿格角行走时擦入水墙、树干或岩壁。河道水面、岸坡、物理阻挡和导航边界使用相同的曲线分段；地面沿河岸切开，避免重复铺面。几何与着色器直接适配项目的 3D 低多边形风格，没有新增栅格图像素材。
 
 ## 数据和后续 Rogue 扩展
 
@@ -34,11 +38,13 @@
 | `scenes/defense/battle.tscn` | 继承主战场，配置冷色环境、相机和警钟 |
 | `scenes/defense/snowfield_map.tscn` | 可编辑雪地图及布局标记 |
 | `tools/build_snowfield_map.py` | 确定性重建地形、材质和导航，覆盖对应生成资产 |
+| `tools/build_snowfield_residences.py` | 重建三款住宅模型及共享原生网格资源，每栋十个材质批次 |
+| `data/buildings/residence.tres` | 装饰住宅的生命、碰撞占地与模型定义 |
 | `tools/snowfield_river.py` | 河岸、冰面、桥梁及其物理/导航边界 |
 | `assets/defense/snowfield_minimap.gdshader` | 与地图共用河道曲线的小地图 |
 | `tools/build_defense_audio.py` | 确定性重建原创钟声及来源元数据 |
 
-`wave_started(index)`、`wave_cleared(index)` 信号和独立关卡 Resource 为后续波间选择、遗物、强化与随机事件提供接入点。当前没有 Rogue 奖励选择或局外成长系统。单人防卫数据不参与联机内容指纹。
+`wave_started(index)`、`wave_cleared(index)` 信号和独立关卡 Resource 为后续波间选择、遗物、强化与随机事件提供接入点。当前没有 Rogue 奖励选择或局外成长系统。单人防卫地图和波次数据不参与联机内容指纹；通用住宅定义纳入正常内容清单。
 
 ## 验证
 
@@ -46,9 +52,11 @@ Godot 4.6.3，Windows，Forward+。
 
 - `tests/defense_mode_test.gd`：57 项通过；真实经济与建造、6 处大体型出兵口和整条导航路线、暂停、清波倒计时、削弱与边界增援、末波待出兵检查、原始基地失败判定。
 - `tests/defense_terrain_test.gd`：50 项通过；开放水域阻挡移动和建造、三处渡口双向大型碰撞体净空及真实战象行军、跨河谷寻路、内部高地/树林碰撞、八矿全部 48 个采矿位置。原生路径查询使用实际单位的搜索配置，并等待初始建筑占地发布。
-- `tests/defense_battle_probe.gd`：首波全程实际行军和交战；敌军抵达西侧后，向初始六名军事单位下达正常攻击移动命令，在约 79 秒模拟时间内清除首波，大本营保持 3000 生命。侧翼敌军可能超出静止守军的自动索敌范围，需要玩家调兵。测试没有传送单位、修改伤害或增添守军；完整十波难度仍需试玩调校。
-- `tests/defense_visual_review.gd`：大厅入口、实际开局、警钟提示，以及关闭迷雾用于美术检查的地图总览、两侧基地、冰河与北侧冰面细节；Forward+ 渲染无着色器错误。
-- 本次地形改版记录保存在本机 `artifacts/defense_terrain/`，内容清单检查通过。首版大厅 UI 回归 228 项通过，历史记录保存在 `artifacts/defense/`。
+- `tests/defense_residence_test.gd`：33 项通过；三种模型、真实剑士攻击、倒塌及碰撞/导航释放、住宅头像、装饰住宅的经济与波次独立性、六处军事出口的大型身体路线净空。
+- `tests/balance_matrix_test.gd`：2649 项通过，包括新增住宅的生命、防御及各兵种伤害矩阵。
+- `tests/defense_battle_probe.gd`：首波全程实际行军和交战；敌军抵达西侧后，向初始六名军事单位下达正常攻击移动命令，在约 75 秒模拟时间内清除首波，大本营保持 3000 生命。侧翼敌军可能超出静止守军的自动索敌范围，需要玩家调兵。测试没有传送单位、修改伤害或增添守军；完整十波难度仍需试玩调校。
+- `tests/defense_visual_review.gd`：大厅入口、实际开局、警钟提示，以及关闭迷雾用于美术检查的地图总览、两侧基地、冰河、敌方城镇、三款住宅近景、选中面板和摧毁后的废墟；Forward+ 渲染无着色器错误。
+- 住宅城镇记录保存在本机 `artifacts/defense_town/`；上一次地形改版记录在 `artifacts/defense_terrain/`，内容清单检查通过。首版大厅 UI 回归 228 项通过，历史记录保存在 `artifacts/defense/`。
 - 原有 `hud_skirmish_display_test.gd` 为 151 项中的 147 项通过。四个失败分别是两项角色文案精确匹配、旧版建造按钮数量、旧版扩农民帮助说明；以修改前 HEAD 的 game/HUD/场景副本运行，得到完全相同的四项失败。本次未修改这些已有过期断言。
 
 官方参考：[GPUParticles3D](https://docs.godotengine.org/en/stable/classes/class_gpuparticles3d.html)、[ParticleProcessMaterial](https://docs.godotengine.org/en/stable/classes/class_particleprocessmaterial.html)、[NavigationRegion3D](https://docs.godotengine.org/en/stable/classes/class_navigationregion3d.html)、[MultiMesh](https://docs.godotengine.org/en/stable/classes/class_multimesh.html)、[ArrayMesh](https://docs.godotengine.org/en/stable/classes/class_arraymesh.html)、[ConvexPolygonShape3D](https://docs.godotengine.org/en/stable/classes/class_convexpolygonshape3d.html)。

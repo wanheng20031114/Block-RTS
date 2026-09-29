@@ -42,6 +42,28 @@ ENEMY = [
     ("SouthGunTower", "cannon_tower", 84, 27, 1),
     ("SouthWatchtower", "defense_tower", 84, 53, 1),
 ]
+# Streets remain broad; small rotations are deliberately avoided so the saved
+# collision footprint and the visual roof eaves stay easy to inspect in-editor.
+# Each tuple is (district, x, z, model suffix, yaw in degrees).
+RESIDENCES = [
+    ("Foregate",44,-7.7,"cottage",0), ("Foregate",55,-7.7,"townhouse",0),
+    ("Foregate",65,-7.7,"cottage",0), ("Foregate",75,-7.7,"longhouse",0),
+    ("Foregate",44,7.7,"cottage",180), ("Foregate",55,7.7,"longhouse",180),
+    ("Foregate",65,7.7,"townhouse",180), ("Foregate",75,7.7,"cottage",180),
+    ("WatchSquare",85,-15,"townhouse",0), ("WatchSquare",85,15,"townhouse",180),
+    ("CastleWard",94,-28,"longhouse",90), ("CastleWard",94,28,"cottage",90),
+    ("CastleWard",104,-32.5,"cottage",0), ("CastleWard",104,32.5,"townhouse",180),
+    ("Market",105,-8.5,"townhouse",0), ("Market",116,-9.6,"cottage",0),
+    ("Market",105,8.5,"longhouse",180), ("Market",116,9.6,"townhouse",180),
+    ("EastWard",123,-21,"cottage",90), ("EastWard",123,-29.9,"townhouse",90),
+    ("EastWard",123,21,"townhouse",90), ("EastWard",123,29.9,"longhouse",90),
+    ("NorthWorkshop",87,-64,"cottage",0), ("NorthWorkshop",98,-66,"longhouse",0),
+    ("NorthWorkshop",109,-66,"cottage",0), ("NorthWorkshop",120,-65,"townhouse",0),
+    ("NorthWorkshop",120,-55,"cottage",90), ("NorthWorkshop",94,-54,"townhouse",90),
+    ("SouthWorkshop",87,64,"longhouse",180), ("SouthWorkshop",98,66,"townhouse",180),
+    ("SouthWorkshop",109,66,"cottage",180), ("SouthWorkshop",120,65,"longhouse",180),
+    ("SouthWorkshop",120,55,"townhouse",90), ("SouthWorkshop",94,54,"cottage",90),
+]
 INTERIOR = [
     ("WestNorthBluff", -55, -22, (16, 7.4, 9.5), .10),
     ("WestSouthBluff", -50, 22, (18, 6.5, 9), -.08),
@@ -146,6 +168,116 @@ def cell_touches_inflated_polygon(x, z, polygon, padding=1.15):
     return False
 
 
+def rectangle(x,z,width,depth,yaw=0.0):
+    corners=[]
+    for px,pz in [(-width/2,-depth/2),(width/2,-depth/2),(width/2,depth/2),(-width/2,depth/2)]:
+        corners.append((x+px*math.cos(yaw)+pz*math.sin(yaw),z-px*math.sin(yaw)+pz*math.cos(yaw)))
+    return hull(corners)
+
+
+def polygon_distance(a,b):
+    """Shortest separation of two convex, static placement footprints."""
+    if inside_inflated(a[0],b,0.0) or inside_inflated(b[0],a,0.0):
+        return 0.0
+    minimum=math.inf
+    def signed(p,q,r):
+        return (q[0]-p[0])*(r[1]-p[1])-(q[1]-p[1])*(r[0]-p[0])
+    for p,q in zip(a,a[1:]+a[:1]):
+        for r,s in zip(b,b[1:]+b[:1]):
+            if max(min(p[0],q[0]),min(r[0],s[0])) <= min(max(p[0],q[0]),max(r[0],s[0])) and max(min(p[1],q[1]),min(r[1],s[1])) <= min(max(p[1],q[1]),max(r[1],s[1])):
+                if signed(p,q,r)*signed(p,q,s)<=0 and signed(r,s,p)*signed(r,s,q)<=0:
+                    return 0.0
+            for point,start,end in [(p,r,s),(q,r,s),(r,p,q),(s,p,q)]:
+                dx,dz=end[0]-start[0],end[1]-start[1]
+                px,pz=point[0]-start[0],point[1]-start[1]
+                t=max(0,min(1,(px*dx+pz*dz)/(dx*dx+dz*dz)))
+                minimum=min(minimum,(px-t*dx)**2+(pz-t*dz)**2)
+    return math.sqrt(minimum)
+
+
+def military_footprints():
+    result=[]
+    for name,kind,x,z,lane in ENEMY:
+        source=(ROOT/f'data/buildings/{kind}.tres').read_text(encoding='utf-8')
+        size=re.search(r'^size = Vector3\(([^)]+)\)',source,re.M)
+        dimensions=[float(value) for value in size.group(1).split(',')] if size else [6,4,5]
+        result.append((name,kind,x,z,dimensions[0],dimensions[2]))
+    return result
+
+
+def validate_town(polygons,river):
+    houses=[]
+    for i,(district,x,z,model,angle) in enumerate(RESIDENCES):
+        roof=rectangle(x,z,6.4,5.9,math.radians(angle))
+        assert max(abs(px) for px,pz in roof)<128 and max(abs(pz) for px,pz in roof)<71, f'House {i} outside town bounds'
+        for j,solid in enumerate(polygons):
+            assert polygon_distance(roof,solid)>.50, f'House {i} {district} ({x},{z}) overlaps scenery {j}'
+        for name,kind,mx,mz,width,depth in military_footprints():
+            clearance=polygon_distance(roof,rectangle(mx,mz,width,depth))
+            assert clearance>1.4, f'House {i} too close to {name}: {clearance:.2f}m'
+        for j,other in enumerate(houses):
+            assert polygon_distance(roof,other)>2.4, f'Houses {i}/{j} need a wider lane'
+        for entrance in (-40,0,40):
+            assert not inside_inflated((119,entrance),roof,5), f'House {i} blocks an entrance'
+        for name,kind,mx,mz,width,depth in military_footprints():
+            if kind in ('barracks','factory'):
+                assert not inside_inflated((mx-6,mz),roof,1.65), f'House {i} crowds producer exit {name}'
+        assert not any(river.is_water_blocked(px,pz,1.15) for px,pz in roof), f'House {i} overlaps water'
+        houses.append(roof)
+    print(f'Town placement: {len(houses)} residential roof footprints clear terrain, military buildings, each other and wave entrances.')
+
+
+def construction_cells(x,z,width,depth):
+    """The existing ConstructionNavigation building-cell contract."""
+    half_x,half_z=width*.5+1.15,depth*.5+1.15
+    return {(cx,cz) for cx in range(math.floor(x-half_x),math.ceil(x+half_x))
+            for cz in range(math.floor(z-half_z),math.ceil(z+half_z))
+            if abs(cx+.5-x)<half_x and abs(cz+.5-z)<half_z}
+
+
+def validate_occupied_town(source_cells):
+    """Verify actual live-building carving without saving it into source nav."""
+    footprints=[]
+    for name,kind,x,z,width,depth in military_footprints():
+        footprints.append(construction_cells(x,z,width,depth))
+    for _,x,z,_,degrees in RESIDENCES:
+        angle=math.radians(degrees)
+        width=abs(math.cos(angle))*6+abs(math.sin(angle))*5.5
+        depth=abs(math.sin(angle))*6+abs(math.cos(angle))*5.5
+        footprints.append(construction_cells(x,z,width,depth))
+    footprints.extend([construction_cells(-106,0,9,8),construction_cells(-92,-10,6,5),construction_cells(-84,10,4,4)])
+    occupied=set().union(*footprints)
+    open_cells=source_cells-occupied
+    start=(-106,6)
+    assert start in open_cells, 'Player base exit blocked by city changes'
+    reached={start}
+    pending=deque([start])
+    while pending:
+        x,z=pending.popleft()
+        for cell in [(x-1,z),(x+1,z),(x,z-1),(x,z+1)]:
+            if cell in open_cells and cell not in reached:
+                reached.add(cell)
+                pending.append(cell)
+    for lane in (-40,0,40):
+        for dz in range(-5,6):
+            for dx in range(-5,6):
+                if dx*dx+dz*dz<=25:
+                    assert (119+dx,lane+dz) in reached, f'Active homes obstruct entrance cell {(119+dx,lane+dz)}'
+        assert (42,lane) in reached, 'Active homes disconnect a main town approach'
+    for name,kind,x,z,_,_ in military_footprints():
+        if kind in ('barracks','factory'):
+            assert (x-6,z) in reached, f'Active homes disconnect {name} deployment'
+    for index,(_,x,z,_,_) in enumerate(RESIDENCES):
+        local_cells={(cx,cz) for cx in range(math.floor(x)-7,math.ceil(x)+8) for cz in range(math.floor(z)-7,math.ceil(z)+8)}
+        assert reached & local_cells, f'Residence {index} cannot be approached'
+        freed=footprints[len(ENEMY)+index]&source_cells
+        for j,other in enumerate(footprints):
+            if j!=len(ENEMY)+index:
+                freed-=other
+        assert freed, f'Demolition of residence {index} would not reopen terrain'
+    print('Town occupancy: all three approaches, all six production exits, 34 housing approaches and demolition footprints verified.')
+
+
 def faceted_mesh(name, seed, rock=False, mesa=False):
     """Small flat-shaded, asymmetric solids with a shared collision hull."""
     rng = random.Random(seed)
@@ -189,6 +321,10 @@ varying vec2 world_xz;
 float wind(vec2 p) {
     return .5 + .20*sin(p.x*.91+p.y*.43) + .17*sin(-p.x*.53+p.y*.79+1.7) + .10*cos(p.x*1.37-p.y*1.13);
 }
+float street(vec2 p, vec2 center, vec2 half_size) {
+    vec2 beyond = abs(p-center)-half_size;
+    return 1.0-smoothstep(-.15,.45,max(beyond.x,beyond.y));
+}
 void vertex() { world_xz = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xz; }
 void fragment() {
     vec2 p = world_xz;
@@ -205,6 +341,22 @@ void fragment() {
     wear *= smoothstep(-119.0, -103.0, p.x);
     vec3 packed_snow = mix(vec3(.29,.43,.53), vec3(.48,.59,.66), detail);
     vec3 surface = mix(snow, packed_snow, wear*.59);
+    // Exposed paving joins the residential fronts to the military courtyards.
+    // It is part of the existing ground material, with no overlapping planes.
+    float town = street(p,vec2(84.5,0),vec2(44.5,3.9));
+    town = max(town,street(p,vec2(103,0),vec2(16,4.7)));
+    town = max(town,street(p,vec2(103,-40),vec2(24,4.4)));
+    town = max(town,street(p,vec2(103,40),vec2(24,4.4)));
+    town = max(town,street(p,vec2(100,-54),vec2(4.5,6.0)));
+    town = max(town,street(p,vec2(100,54),vec2(4.5,6.0)));
+    town = max(town,street(p,vec2(119,-23),vec2(2.0,10.5)));
+    town = max(town,street(p,vec2(119,23),vec2(2.0,10.5)));
+    vec2 paving = vec2(p.x*.95 + mod(floor(p.y*.82),2.0)*.5,p.y*.82);
+    vec2 joint = abs(fract(paving)-.5);
+    float mortar = smoothstep(.43,.49,max(joint.x,joint.y));
+    vec3 flagstones = mix(vec3(.39,.49,.54),vec3(.56,.64,.67),detail);
+    flagstones = mix(flagstones,vec3(.64,.73,.77),mortar*.48);
+    surface = mix(surface,flagstones,town*.70);
     ALBEDO = surface;
     ROUGHNESS = .94;
     SPECULAR = .15;
@@ -450,14 +602,16 @@ def author():
         solid(name,(x,0,z),scale,angle,mesa_vertices,"Bluff","MountainMaterial","InteriorTerrain")
 
     # A few clusters at the edge supply terrain, while all three lanes stay wide.
-    rock_sites = [(-122,-42),(-117,43),(-72,-23),(-69,25),(-38,-29),(-34,31),(41,-26),(36,24),(70,-28),(70,28),(-49,-63),(-49,62),(89,-66),(86,65)]
+    rock_sites = [(-122,-42),(-117,43),(-72,-23),(-69,25),(-38,-29),(-34,31),(41,-26),(36,24),(70,-28),(70,28),(-49,-63),(-49,62),(79,-68),(79,68)]
     for i, (x,z) in enumerate(rock_sites):
         for j in range(2 if i % 3 else 3):
             sx = RNG.uniform(1.1,2.3) if j else RNG.uniform(2.0,3.1)
             sz = sx*RNG.uniform(.70,1.05)
             solid(f"Boulder{i:02d}_{j}", (x+RNG.uniform(-2,2),0,z+RNG.uniform(-1,1)), (sx,RNG.uniform(1.4,3.0),sz), RNG.uniform(0,math.tau), rock_vertices, "Boulder", "BoulderMaterial", "GlacialRocks")
 
+    validate_town(polygons,river)
     reserved = [(x,z,7.2) for x,z in MINES] + [(x,z,7.5) for _,_,x,z,_ in ENEMY]
+    reserved += [(x,z,4.3) for _,x,z,_,_ in RESIDENCES]
     reserved += [(-106,0,21), (-92,-10,11), (-84,10,11)]
     tree_sites = []
     # Snow forests grow in irregular belts, with fully reserved broad valleys.
@@ -506,6 +660,8 @@ def author():
     nodes.append('[node name="EnemyBuildings" type="Node3D" parent="."]')
     for name,kind,x,z,lane in ENEMY:
         nodes.append(f'[node name="{name}" type="Marker3D" parent="EnemyBuildings"]\nposition = Vector3({x}, 0, {z})\nrotation = Vector3(0, -1.570796, 0)\nmetadata/kind = "{kind}"\nmetadata/lane = {lane}')
+    for i,(district,x,z,model,angle) in enumerate(RESIDENCES):
+        nodes.append(f'[node name="{district}Residence{i:02d}" type="Marker3D" parent="EnemyBuildings"]\nposition = Vector3({x}, 0, {z})\nrotation = Vector3(0, {math.radians(angle):.6f}, 0)\nmetadata/kind = "residence"\nmetadata/model = "residence_{model}"\nmetadata/district = "{district}"\nmetadata/lane = {0 if abs(z)<20 else -1 if z<0 else 1}')
     nodes.append('[node name="Entrances" type="Node3D" parent="."]')
     for name,lane in [("North",-1),("Center",0),("South",1)]:
         nodes.append(f'[node name="{name}" type="Marker3D" parent="Entrances"]\nposition = Vector3(119, 0, {lane*40})\nmetadata/lane = {lane}')
@@ -531,7 +687,7 @@ display_name = "霜原守望"
 size = Vector2(256, 144)
 slots = 2
 scene = ExtResource("scene")''')
-    print(f"Authored snowfield: {len(mountains)+extra_ridges} layered ridge sections, {len(INTERIOR)} solid interior bluffs, {len(rock_sites)} boulder groups, {len(tree_sites)} pines in {batch_count} batches, 8 mines, 13 enemy buildings.")
+    print(f"Authored snowfield: {len(mountains)+extra_ridges} layered ridge sections, {len(INTERIOR)} solid interior bluffs, {len(rock_sites)} boulder groups, {len(tree_sites)} pines in {batch_count} batches, 8 mines, 13 military buildings and {len(RESIDENCES)} homes.")
 
 
 def navigation(polygons,river):
@@ -565,6 +721,7 @@ def navigation(polygons,river):
         assert (x-5,z) in visited, "Expansion mine disconnected"
     for _,_,x,z,_ in ENEMY:
         assert (x-6,z) in visited, "Enemy deployment exit disconnected"
+    validate_occupied_town(visited)
     vertices, ids, polygons_out = [], {}, []
     for x,z in sorted(visited,key=lambda p:(p[1],p[0])):
         indices=[]

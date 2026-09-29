@@ -21,9 +21,12 @@ const MODELS: Dictionary = {
 	"castle": preload("res://assets/models/environment/castle.tscn"),
 	"heavy_fortress": preload("res://assets/models/environment/heavy_fortress.tscn"),
 	"house": preload("res://assets/models/environment/house.tscn"),
+	"residence_cottage": preload("res://assets/defense/residence_cottage.tscn"),
+	"residence_townhouse": preload("res://assets/defense/residence_townhouse.tscn"),
+	"residence_longhouse": preload("res://assets/defense/residence_longhouse.tscn"),
 }
 
-@export_enum("headquarters", "enemy_keep", "barracks", "tower", "house", "defense_tower", "cannon_tower", "castle", "heavy_fortress", "factory", "academy") var building_type: String = "headquarters"
+@export_enum("headquarters", "enemy_keep", "barracks", "tower", "house", "residence", "defense_tower", "cannon_tower", "castle", "heavy_fortress", "factory", "academy") var building_type: String = "headquarters"
 @export var team: int = 0
 @export var owner_id: int = -1
 var alliance_id: int = 0
@@ -126,6 +129,8 @@ func _ready() -> void:
 		order_name = "等待施工"
 	else:
 		order_name = "自动防御" if float(_stats.damage) > 0.0 else "待命"
+		if building_type == "residence":
+			order_name = "装饰建筑 · 可摧毁"
 	construction_bar.position.y = float(_stats.bar_height) - 0.4
 	construction_bar.scale.x = radius * 1.25
 	construction_bar.set_instance_shader_parameter("bar_color", Color("e5b94d"))
@@ -299,7 +304,7 @@ func get_projectile_origin(index: int = 0) -> Vector3:
 	return $ProjectileOrigin.global_position
 
 func get_hit_effect() -> String:
-	return "wood_hit" if building_type in ["tower", "house", "barracks", "defense_tower"] else "stone_chip"
+	return "wood_hit" if building_type in ["tower", "house", "residence", "barracks", "defense_tower"] else "stone_chip"
 
 func get_combat_definition() -> CombatDefinition:
 	return _stats

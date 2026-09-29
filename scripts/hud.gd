@@ -37,7 +37,7 @@ func _ready() -> void:
 	UIMotion.bind_buttons(self)
 	UIMotion.reveal.call_deferred($Resources, Vector2(0, -8))
 	UIMotion.reveal.call_deferred($CommandBar, Vector2(0, 12))
-	for kind in UNIT_ORDER + ["headquarters", "gold_vein", "defense_tower", "cannon_tower", "castle", "heavy_fortress", "barracks", "factory", "academy"]:
+	for kind in UNIT_ORDER + ["headquarters", "gold_vein", "defense_tower", "cannon_tower", "castle", "heavy_fortress", "barracks", "factory", "academy", "residence"]:
 		portraits[kind] = $ModelPreviews.portrait(kind)
 	portraits["attack_upgrade"] = preload("res://assets/ui/attack_upgrade.png")
 	portraits["defense_upgrade"] = preload("res://assets/ui/defense_upgrade.png")

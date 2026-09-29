@@ -1,0 +1,9 @@
+[gd_resource type="BoxMesh" load_steps=2 format=3]
+
+[sub_resource type="StandardMaterial3D" id="Finish"]
+roughness = 0.92
+albedo_color = Color(0.39000, 0.19000, 0.15500, 1.00000)
+
+[resource]
+material = SubResource("Finish")
+size = Vector3(1, 1, 1)
